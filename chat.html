@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a4f2b">
+<title>OSSIA | Chatbot AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="home.css">
+<link rel="stylesheet" href="mobile-pages.css">
+<style>
+  body > .om-chat-page, .om-chat-page {
+    background: radial-gradient(circle at 0% 0%, rgba(10, 79, 43, 0.28) 0%, transparent 55%),
+                radial-gradient(circle at 100% 100%, rgba(10, 79, 43, 0.25) 0%, transparent 55%), #f7faf8 !important;
+    min-height: 100% !important; height: 100% !important; display: flex !important; flex-direction: column !important; overflow: hidden !important;
+  }
+  .om-chat-page .om-topbar { background: transparent !important; border-bottom: none !important; color: #172b21; flex-shrink: 0; }
+  .om-chat-page .om-brand { color: #172b21; }
+  .om-chat-page .om-brand small { color: #5a6e62; }
+  .om-chat-page .om-logo { background: #0a4f2b; color: #fff; }
+  .om-chat-page .om-icon-btn { background: #e5f5ec; border-color: #cce5d5; color: #0a4f2b; cursor: pointer; }
+
+  .om-chat-content { display: flex !important; flex-direction: column !important; flex: 1 !important; min-height: 0 !important; padding: 8px 12px 76px !important; overflow: hidden !important; justify-content: space-between !important; }
+  .om-chat-card { background: transparent !important; border: none !important; box-shadow: none !important; display: flex !important; flex-direction: column !important; flex: 1 !important; min-height: 0 !important; justify-content: flex-end !important; }
+
+  /* Area Chat */
+  .om-chat-box {
+    flex: 1 !important; min-height: 0 !important; overflow-y: auto !important; display: flex; flex-direction: column; gap: 8px; padding: 4px; background: transparent !important; border: none !important; margin-bottom: 8px;
+    scroll-behavior: smooth;
+  }
+  .chat-bubble { display: flex; gap: 8px; align-items: flex-end; max-width: 90%; margin: 4px 0; animation: fadeIn 0.3s ease; }
+  .chat-bubble.user { margin-left: auto; flex-direction: row-reverse; }
+  .chat-avatar { width: 30px; height: 30px; flex: 0 0 30px; border-radius: 50%; background: #0a4f2b; display: grid; place-items: center; color: white; font-size: 0.8rem; }
+  .chat-message { background: #0a4f2b; color: #fff; border-radius: 14px 14px 14px 4px; padding: 10px 12px; line-height: 1.45; font-size: 0.78rem; overflow-wrap: anywhere; box-shadow: 0 4px 12px rgba(10,79,43,0.15); }
+  .chat-bubble.user .chat-message { background: #ffffff; color: #172b21; border: 1px solid #dce9e1; border-radius: 14px 14px 4px 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Quick Text */
+  .om-quick-text-card { background: #ffffff; border: 1px solid #dce9e1; border-radius: 16px; padding: 10px 12px; box-shadow: 0 6px 20px rgba(10,79,43,0.08); margin-bottom: 8px; flex-shrink: 0; transition: all 0.3s; }
+  .om-quick-title { font-size: 0.65rem; font-weight: 800; letter-spacing: 1px; color: #172b21; margin-bottom: 6px; }
+  .om-quick-chips { display: flex; flex-direction: column; gap: 5px; }
+  .om-quick-chip-btn { background: #0a4f2b; color: #fff; border: none; border-radius: 99px; padding: 7px 12px; font-size: 0.72rem; font-weight: 600; text-align: left; cursor: pointer; transition: opacity 0.2s; }
+  .om-quick-chip-btn:hover { opacity: 0.9; }
+
+  /* Composer */
+  .om-chat-composer { background: #ffffff !important; border: 1.5px solid #cce5d5 !important; border-radius: 99px !important; display: flex !important; align-items: center !important; padding: 5px 6px 5px 12px !important; box-shadow: 0 4px 14px rgba(10,79,43,0.08); flex-shrink: 0; margin-bottom: 2px; }
+  .om-chat-composer input { border: none !important; background: transparent !important; font-size: 0.78rem !important; color: #172b21 !important; outline: none !important; padding: 6px 2px !important; width: 100%; font-family: inherit;}
+  .om-chat-send { background: #0a4f2b !important; color: white !important; width: 34px !important; height: 34px !important; border-radius: 50% !important; display: grid !important; place-items: center !important; font-size: 0.8rem !important; flex-shrink: 0; cursor: pointer; border: none;}
+  .om-disclaimer { text-align: center; font-size: 0.58rem; color: #5a6e62; margin-top: 2px; flex-shrink: 0; }
+
+  /* Sidebar Drawer */
+  .chat-history-drawer {
+    position: absolute; top: 0; left: -100%; width: 80%; max-width: 300px; height: 100%; background: #ffffff; z-index: 1100;
+    box-shadow: 5px 0 25px rgba(0,0,0,0.15); transition: left 0.3s ease; display: flex; flex-direction: column; padding: 16px;
+  }
+  .chat-history-drawer.open { left: 0; }
+  .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #e4eee7; padding-bottom: 10px; }
+  .drawer-header h3 { font-size: 0.95rem; color: #0a4f2b; margin: 0; }
+  
+  .new-chat-btn { background: #e5f5ec; color: #0a4f2b; border: 1px solid #b9dcc7; border-radius: 10px; padding: 10px; width: 100%; font-weight: 700; font-size: 0.75rem; margin-bottom: 8px; cursor: pointer; text-align: left; transition: background 0.2s;}
+  .new-chat-btn:hover { background: #cce5d5; }
+  .clear-history-sidebar-btn { background: #fdf2f2; color: #d32f2f; border: 1px solid #f5c6c6; border-radius: 10px; padding: 8px 10px; width: 100%; font-weight: 600; font-size: 0.72rem; margin-bottom: 12px; cursor: pointer; text-align: left; transition: background 0.2s; }
+  .clear-history-sidebar-btn:hover { background: #fce8e8; }
+  
+  .history-list-item { 
+    position: relative; padding: 10px 32px 10px 10px; border-radius: 8px; font-size: 0.75rem; color: #33443a; background: #f7faf8; margin-bottom: 6px; cursor: pointer; border: 1px solid #edf2ee; transition: all 0.2s; 
+  }
+  .history-list-item:hover, .history-list-item.active { background: #e5f5ec; border-color: #b9dcc7; }
+  .history-text-content { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+  
+  .history-menu-btn {
+    position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+    background: transparent; border: none; font-size: 1rem; color: #5a6e62; cursor: pointer; padding: 4px 6px; border-radius: 4px;
+  }
+  .history-menu-btn:hover { background: rgba(0,0,0,0.06); color: #0a4f2b; }
+
+  .history-dropdown-menu {
+    position: absolute; right: 10px; top: 38px; background: #ffffff; border: 1px solid #dce9e1; box-shadow: 0 6px 16px rgba(0,0,0,0.12); border-radius: 8px; padding: 4px; z-index: 1200; display: none; min-width: 120px;
+  }
+  .history-dropdown-menu.show { display: block; }
+  .history-dropdown-item {
+    background: transparent; border: none; width: 100%; text-align: left; padding: 6px 10px; font-size: 0.72rem; color: #d32f2f; font-weight: 600; cursor: pointer; border-radius: 4px;
+  }
+  .history-dropdown-item:hover { background: #fdf2f2; }
+
+  /* Custom Modal Dialog (Pengganti confirm bawaan browser) */
+  .profile-modal {
+    width: calc(100% - 32px); max-width: 360px; padding: 20px; border: none; border-radius: 20px; background: #fff; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center;
+  }
+  .profile-modal::backdrop { background: rgba(5,31,17,0.5); backdrop-filter: blur(2px); }
+  .profile-modal h3 { color: #0a4f2b; margin-top: 0; font-size: 1rem; margin-bottom: 8px; }
+  .profile-modal p { font-size: 0.8rem; color: #5a6e62; margin-bottom: 20px; line-height: 1.4; }
+  .modal-actions { display: flex; gap: 10px; }
+  .modal-actions button { flex: 1; padding: 10px; border-radius: 99px; font-size: 0.8rem; font-weight: 700; cursor: pointer; border: none; }
+  .btn-confirm-delete { background: #d32f2f; color: #fff; }
+  .btn-cancel-delete { background: #e4eee7; color: #172b21; }
+
+  .drawer-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); z-index: 1050; display: none; backdrop-filter: blur(2px); }
+  .drawer-overlay.show { display: block; }
+</style>
+<link rel="stylesheet" href="ossia-shared-ui.css">
+</head>
+<body class="ossia-chat-document">
+<section class="ossia-mobile-page om-chat-page" id="view-chat">
+  
+  <!-- Sidebar Riwayat Chat AI -->
+  <div class="drawer-overlay" id="drawerOverlay" onclick="toggleHistoryDrawer()"></div>
+  <div class="chat-history-drawer" id="historyDrawer">
+    <div class="drawer-header">
+      <h3>Riwayat Percakapan</h3>
+      <button type="button" style="border:none; background:transparent; font-size:1.2rem; cursor:pointer;" onclick="toggleHistoryDrawer()">×</button>
+    </div>
+    
+    <button type="button" class="new-chat-btn" onclick="createNewSession()">+ Chat Baru</button>
+    <button type="button" class="clear-history-sidebar-btn" onclick="bukaModalKonfirmasi()">🗑 Hapus Semua Riwayat</button>
+    
+    <div id="historyListContainer" style="overflow-y: auto; flex: 1;"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="om-topbar">
+    <div class="om-brand"><span class="om-logo">O<i></i></span><span>OSSIA<small>RSUD Haji</small></span></div>
+    <button class="om-icon-btn" id="chatNotifications" type="button" aria-label="Notifikasi" onclick="showOssiaToast('Belum ada notifikasi baru.')">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg><b aria-hidden="true"></b>
+    </button>
+  </header>
+  
+  <main class="om-content om-chat-content">
+    <section class="om-chat-intro">
+      <p class="om-eyebrow">CHAT ASSISTANT</p>
+      <h1>Asisten OSSIA</h1>
+      <p>Tanyakan seputar pemeriksaan usia tulang karpal.</p>
+    </section>
+    <section class="om-chat-card">
+      
+      <div id="chat-box" class="om-chat-box"></div>
+
+      <div class="om-quick-text-card" id="quick-text-card">
+        <div class="om-quick-title">QUICK TEXT</div>
+        <div class="om-quick-chips">
+          <button type="button" class="om-quick-chip-btn" onclick="kirimPesan(this.innerText)">Apa itu usia tulang?</button>
+          <button type="button" class="om-quick-chip-btn" onclick="kirimPesan(this.innerText)">Bagaimana cara kerja analisis?</button>
+          <button type="button" class="om-quick-chip-btn" onclick="kirimPesan(this.innerText)">Apa arti status hasil?</button>
+          <button type="button" class="om-quick-chip-btn" onclick="kirimPesan(this.innerText)">Tips kesehatan pertumbuhan anak</button>
+        </div>
+      </div>
+
+      <div class="om-chat-composer">
+        <button class="om-chat-attach" type="button" aria-label="Lampiran" onclick="showOssiaToast('Fitur lampiran belum tersedia.')">⌁</button>
+        <input id="chat-input" type="text" placeholder="Ketik pesan..." autocomplete="off">
+        <button class="om-chat-send" type="button" onclick="kirimPesan()">➤</button>
+      </div>
+    </section>
+
+    <p class="om-disclaimer">AI dapat melakukan kesalahan. Harap selalu konsultasikan dengan dokter terkait.</p>
+  </main>
+</section>
+
+<!-- Custom Modal Konfirmasi Hapus -->
+<dialog class="profile-modal" id="modalKonfirmasiHapus">
+  <h3>Hapus Semua Riwayat</h3>
+  <p>Apakah Anda yakin ingin menghapus seluruh riwayat percakapan AI?</p>
+  <div class="modal-actions">
+    <button type="button" class="btn-cancel-delete" onclick="document.getElementById('modalKonfirmasiHapus').close()">Batal</button>
+    <button type="button" class="btn-confirm-delete" onclick="eksekusiHapusSemuaChat()">Ya, Hapus</button>
+  </div>
+</dialog>
+
+<!-- ======================= LOGIKA CHATBOT AI ======================= -->
+<script>
+  const STORAGE_KEY = 'ossia_chat_history';
+  let chatSessions = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  let currentSessionId = null;
+
+  function toggleHistoryDrawer() {
+    document.getElementById('historyDrawer').classList.toggle('open');
+    document.getElementById('drawerOverlay').classList.toggle('show');
+  }
+
+  document.getElementById("chat-input").addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      kirimPesan();
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    renderHistorySidebar();
+    if (chatSessions.length > 0) {
+      loadSession(chatSessions[0].id);
+    } else {
+      createNewSession();
+    }
+  });
+
+  function createNewSession() {
+    currentSessionId = Date.now().toString();
+    document.getElementById('chat-box').innerHTML = `
+      <div class="chat-bubble ai">
+        <div class="chat-avatar">🤖</div>
+        <div class="chat-message"><b>Hai, aku OSSIA!</b><br>Asisten cerdas RSUD Haji. Ada yang bisa kubantu tentang hasil skrining X-ray?</div>
+      </div>
+    `;
+    document.getElementById('quick-text-card').style.display = 'block';
+    const drawer = document.getElementById('historyDrawer');
+    if (drawer.classList.contains('open')) toggleHistoryDrawer();
+    renderHistorySidebar();
+  }
+
+  function loadSession(id) {
+    currentSessionId = id;
+    const session = chatSessions.find(s => s.id === id);
+    if (!session) return;
+    
+    const chatBox = document.getElementById('chat-box');
+    chatBox.innerHTML = '';
+    
+    session.messages.forEach(msg => {
+      appendMessageUI(msg.role, msg.text);
+    });
+    
+    if (session.messages.length > 1) {
+      document.getElementById('quick-text-card').style.display = 'none';
+    } else {
+      document.getElementById('quick-text-card').style.display = 'block';
+    }
+    
+    const drawer = document.getElementById('historyDrawer');
+    if (drawer.classList.contains('open')) toggleHistoryDrawer();
+    renderHistorySidebar();
+  }
+
+  function kirimPesan(predefinedText = null) {
+    const input = document.getElementById('chat-input');
+    const textUser = predefinedText || input.value.trim();
+    
+    if (!textUser) return;
+    input.value = '';
+    document.getElementById('quick-text-card').style.display = 'none';
+
+    appendMessageUI('user', textUser);
+    saveMessageToMemory('user', textUser);
+
+    setTimeout(() => {
+      const jawabanAI = mesinPenjawabAI(textUser);
+      appendMessageUI('ai', jawabanAI);
+      saveMessageToMemory('ai', jawabanAI);
+    }, 600);
+  }
+
+  function appendMessageUI(role, text) {
+    const chatBox = document.getElementById('chat-box');
+    const bubble = document.createElement('div');
+    bubble.className = `chat-bubble ${role}`;
+    
+    if (role === 'ai') {
+      bubble.innerHTML = `<div class="chat-avatar">🤖</div><div class="chat-message">${text}</div>`;
+    } else {
+      bubble.innerHTML = `<div class="chat-message">${text}</div>`;
+    }
+    
+    chatBox.appendChild(bubble);
+    setTimeout(() => { chatBox.scrollTop = chatBox.scrollHeight; }, 50);
+  }
+
+  function saveMessageToMemory(role, text) {
+    let session = chatSessions.find(s => s.id === currentSessionId);
+    
+    if (!session) {
+      session = {
+        id: currentSessionId,
+        title: text.substring(0, 22) + (text.length > 22 ? '...' : ''),
+        updatedAt: Date.now(),
+        messages: [
+          { role: 'ai', text: '<b>Hai, aku OSSIA!</b><br>Asisten cerdas RSUD Haji. Ada yang bisa kubantu tentang hasil skrining X-ray?' }
+        ]
+      };
+      chatSessions.unshift(session);
+    }
+    
+    session.messages.push({ role, text });
+    session.updatedAt = Date.now();
+    chatSessions.sort((a, b) => b.updatedAt - a.updatedAt);
+    
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(chatSessions));
+    renderHistorySidebar();
+  }
+
+  function hapusSesiTertentu(event, id) {
+    event.stopPropagation();
+    chatSessions = chatSessions.filter(s => s.id !== id);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(chatSessions));
+    
+    if (currentSessionId === id) {
+      if (chatSessions.length > 0) {
+        loadSession(chatSessions[0].id);
+      } else {
+        createNewSession();
+      }
+    } else {
+      renderHistorySidebar();
+    }
+    
+    if (typeof showOssiaToast === 'function') {
+      showOssiaToast('Riwayat percakapan dihapus.');
+    }
+  }
+
+  function toggleDropdownMenu(event, id) {
+    event.stopPropagation();
+    document.querySelectorAll('.history-dropdown-menu').forEach(menu => {
+      if (menu.id !== 'dropdown-' + id) menu.classList.remove('show');
+    });
+    
+    const dropdown = document.getElementById('dropdown-' + id);
+    if (dropdown) {
+      dropdown.classList.toggle('show');
+    }
+  }
+
+  window.addEventListener('click', () => {
+    document.querySelectorAll('.history-dropdown-menu').forEach(menu => {
+      menu.classList.remove('show');
+    });
+  });
+
+  // Fungsi memunculkan modal custom
+  function bukaModalKonfirmasi() {
+    document.getElementById('modalKonfirmasiHapus').showModal();
+  }
+
+  // Fungsi mengeksekusi penghapusan setelah diklik "Ya, Hapus"
+  function eksekusiHapusSemuaChat() {
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem('chatMessages');
+    chatSessions = [];
+    document.getElementById('modalKonfirmasiHapus').close();
+    createNewSession();
+    if (typeof showOssiaToast === 'function') {
+      showOssiaToast('Semua riwayat chat berhasil dibersihkan.');
+    }
+  }
+
+  function renderHistorySidebar() {
+    const container = document.getElementById('historyListContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    
+    if (chatSessions.length === 0) {
+      container.innerHTML = '<div style="text-align:center; color:#718279; font-size:0.75rem; margin-top:20px;">Belum ada riwayat percakapan.</div>';
+      return;
+    }
+    
+    chatSessions.forEach(session => {
+      const date = new Date(session.updatedAt);
+      const timeString = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) + ', ' + date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+      
+      const div = document.createElement('div');
+      div.className = 'history-list-item ' + (session.id === currentSessionId ? 'active' : '');
+      div.innerHTML = `
+        <span class="history-text-content">
+          <b>${session.title}</b><br><small style="color:#718279;">${timeString}</small>
+        </span>
+        <button class="history-menu-btn" onclick="toggleDropdownMenu(event, '${session.id}')">⋮</button>
+        <div class="history-dropdown-menu" id="dropdown-${session.id}">
+          <button class="history-dropdown-item" onclick="hapusSesiTertentu(event, '${session.id}')">🗑 Hapus</button>
+        </div>
+      `;
+      div.onclick = () => loadSession(session.id);
+      
+      container.appendChild(div);
+    });
+  }
+
+  function mesinPenjawabAI(text) {
+    const lowerText = text.toLowerCase();
+    if (lowerText.includes('apa itu usia tulang')) {
+      return '<b>Usia tulang (Bone Age)</b> adalah cara mengukur tingkat kematangan kerangka anak berdasarkan penulangan kartilago pada X-ray pergelangan tangan (karpal).';
+    } 
+    else if (lowerText.includes('cara kerja')) {
+      return 'Sistem <b>Si-Karpal OSSIA</b> menggunakan model AI Deep Learning untuk menganalisis rasio kepadatan tulang carpal dari foto rontgen secara otomatis.';
+    } 
+    else if (lowerText.includes('arti status') || lowerText.includes('status hasil')) {
+      return 'Status hasil menunjukkan perbandingan usia tulang dengan umur asli:<br><br>• <b>Normal:</b> Sesuai.<br>• <b>Delayed:</b> Lebih lambat.<br>• <b>Advanced:</b> Lebih cepat.';
+    } 
+    else if (lowerText.includes('tips kesehatan') || lowerText.includes('pertumbuhan')) {
+      return 'Pastikan anak mendapat nutrisi kaya Kalsium, Vitamin D, serta waktu tidur yang cukup untuk mengoptimalkan pertumbuhan tulangnya.';
+    } 
+    else {
+      return 'Menarik sekali! Saat ini kemampuanku difokuskan pada analisis tulang karpal pediatrik di RSUD Haji. Ada hal lain seputar skrining yang ingin didiskusikan?';
+    }
+  }
+</script>
+
+<script>
+(function () {
+  const pages = { landing:"landing.html", login:"login.html", home:"home.html", dashboard:"home.html",
+    riwayat:"riwayat.html", chat:"chat.html", chatbot:"chat.html", me:"me.html" };
+  window.bukaHalaman = function (target) { window.location.href = pages[target] || "index.html"; };
+  
+  window.showOssiaToast = function (message) {
+    let toast = document.getElementById("ossia-global-toast");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "ossia-global-toast";
+      toast.className = "om-toast";
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add("show");
+    window.setTimeout(() => toast.classList.remove("show"), 2500);
+  };
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const current = location.pathname.split("/").pop().toLowerCase().replace(".html", "");
+    if (!["home", "riwayat", "chat", "me"].includes(current) || document.querySelector(".mobile-nav")) return;
+    const items = [["home","⌂","Home"],["riwayat","▤","Riwayat"],["chat","▢","Chat"],["me","♙","Me"]];
+    const nav = document.createElement("nav");
+    nav.className = "mobile-nav";
+    nav.setAttribute("aria-label", "Navigasi utama");
+    nav.innerHTML = items.map(([id, icon, label]) =>
+      `<button type="button" class="${current===id?"active":""}" aria-label="${label}" ${current===id?'aria-current="page"':""} onclick="bukaHalaman('${id}')"><span aria-hidden="true">${icon}</span><span>${label}</span></button>`
+    ).join("");
+    document.body.appendChild(nav);
+  });
+})();
+</script>
+</body>
+</html>

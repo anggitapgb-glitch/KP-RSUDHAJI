@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a4f2b">
+<title>OSSIA | Masuk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+/* Perbaikan tombol dan tampilan login tanpa mengubah desain utama */
+.auth-page { position:relative; }
+.back-link { cursor:pointer; }
+.login-submit { cursor:pointer; }
+.login-message { display:none; color:#b42318; font-size:.82rem; margin:.5rem 0 0; }
+.login-message.show { display:block; }
+</style>
+</head>
+<body>
+<section class="auth-page">
+  <button class="back-link" type="button" onclick="window.location.href='index.html'">← Kembali</button>
+  <div class="auth-brand"><span class="brand-symbol">O</span><strong>OSSIA</strong></div>
+  <div class="login-form-wrap">
+    <form class="login-card" id="loginForm">
+      <h2>Masuk ke OSSIA</h2>
+      <p class="sub">Silakan masuk menggunakan No. Rekam Medis Anda.</p>
+      <div class="field" style="margin-top:1.5rem;">
+        <label for="rm">No. Rekam Medis</label>
+        <input id="rm" name="rm" placeholder="Masukkan No. RM Anda" type="text" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="password">Kata Sandi / Tanggal Lahir</label>
+        <input id="password" name="password" placeholder="Masukkan kata sandi atau tanggal lahir" type="password" autocomplete="current-password" required>
+      </div>
+      <p class="login-message" id="loginMessage">Isi No. Rekam Medis dan kata sandi terlebih dahulu.</p>
+      <button class="btn block login-submit" type="submit" style="margin-top:1rem;">Masuk</button>
+    </form>
+  </div>
+</section>
+<script>
+document.getElementById('loginForm').addEventListener('submit', function (event) {
+  event.preventDefault();
+  const rm = document.getElementById('rm').value.trim();
+  const password = document.getElementById('password').value.trim();
+  if (!rm || !password) {
+    document.getElementById('loginMessage').classList.add('show');
+    return;
+  }
+  // Login ini masih mode demo: input tidak diverifikasi ke server.
+  window.location.href = 'home.html';
+});
+</script>
+</body>
+</html>

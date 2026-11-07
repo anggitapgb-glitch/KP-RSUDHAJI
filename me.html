@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a4f2b"><title>OSSIA | Profil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="home.css"><link rel="stylesheet" href="mobile-pages.css">
+<style>
+  .om-me-content {
+    background: linear-gradient(180deg, #0a4f2b 0%, #e5f5ec 45%, #f4f9f6 100%);
+    min-height: calc(100vh - 68px); padding-bottom: 30px;
+  }
+  .om-me-page .om-page-intro h1 { color: #ffffff !important; font-size: 1.6rem; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .om-custom-profile-card {
+    background: #ffffff; border: 1px solid #dce9e1; border-radius: 20px; padding: 16px;
+    box-shadow: 0 10px 30px rgba(10,79,43,0.1); margin-bottom: 20px; display: flex; align-items: center; gap: 15px;
+  }
+  .om-custom-avatar {
+    width: 68px; height: 68px; border-radius: 50%; overflow: hidden; background: linear-gradient(135deg, #dff3e6, #a1d6bc);
+    display: grid; place-items: center; border: 2px solid #cce5d5; flex-shrink: 0;
+  }
+  .om-custom-avatar svg { width: 100%; height: 100%; object-fit: cover; }
+  .om-profile-details { flex: 1; min-width: 0; }
+  .om-badge-pill { display: inline-block; background: #0a4f2b; color: #fff; font-size: 0.72rem; font-weight: 700; padding: 3px 10px; border-radius: 99px; margin-bottom: 6px; letter-spacing: 0.3px; }
+  .om-role-label { display: none; }
+  
+  .om-info-text { font-size: 0.72rem; color: #45564e; line-height: 1.45; font-weight: 500; }
+  .om-info-text b { color: #172b21; }
+
+  /* CSS Modal Dialog */
+  .profile-modal {
+    width: calc(100% - 32px); max-width: 420px; padding: 20px; border: none; border-radius: 20px; background: #fff; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .profile-modal::backdrop { background: rgba(5,31,17,0.5); backdrop-filter: blur(2px); }
+  
+  /* Header Modal & Navigasi */
+  .modal-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+  .modal-header-left { display: flex; align-items: center; gap: 10px; }
+  .modal-back-btn { background: transparent; border: none; font-size: 1.3rem; color: #0a4f2b; cursor: pointer; padding: 0; line-height: 1; display: none; }
+  .modal-close-btn { border: none; background: #edf4ef; border-radius: 50%; width: 30px; height: 30px; font-weight: bold; cursor: pointer; color: #0a4f2b; display: grid; place-items: center; flex-shrink: 0; }
+  
+  .profile-modal h3 { color: #0a4f2b; margin: 0; font-size: 1.1rem; }
+  .modal-subtitle { font-size: 0.75rem; color: #718279; margin-bottom: 15px; display: block; line-height: 1.4; }
+  
+  .modal-menu-list { display: flex; flex-direction: column; gap: 8px; }
+  .modal-menu-item {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #eef7f2; border: 1px solid #dce9e1; padding: 14px 16px;
+    border-radius: 14px; font-size: 0.8rem; color: #172b21; cursor: pointer;
+    text-align: left; font-weight: 600; transition: background 0.2s;
+  }
+  .modal-menu-item:hover { background: #e5f5ec; }
+  .modal-menu-item b { color: #0a4f2b; font-size: 1.2rem; line-height: 1; font-weight: 400; }
+  
+  .static-info-box {
+    background: #ffffff; border: 1px solid #e4eee7; border-radius: 12px; padding: 14px;
+    font-size: 0.8rem; color: #33443a; line-height: 1.8; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+  }
+
+  /* Form Elements */
+  .modal-form-group { margin-bottom: 12px; text-align: left; }
+  .modal-form-group label { display: block; font-size: 0.75rem; color: #172b21; margin-bottom: 6px; font-weight: 700; }
+  .modal-form-group input, .modal-form-group select, .modal-form-group textarea {
+    width: 100%; padding: 12px 14px; border: 1.5px solid #dce9e1; border-radius: 12px; font-size: 0.8rem; color: #172b21; background: #fbfdfc; outline: none; transition: border-color 0.2s; font-family: inherit;
+  }
+  .modal-form-group input:focus, .modal-form-group select:focus, .modal-form-group textarea:focus { border-color: #0a4f2b; }
+  
+  .modal-btn-primary { width: 100%; background: #0a4f2b; color: #fff; border: none; border-radius: 99px; padding: 14px; font-size: 0.85rem; font-weight: 700; cursor: pointer; margin-top: 10px; }
+  .modal-btn-danger { width: 100%; background: #d32f2f; color: #fff; border: none; border-radius: 99px; padding: 14px; font-size: 0.85rem; font-weight: 700; cursor: pointer; margin-top: 10px; }
+  .modal-btn-secondary { width: 100%; background: #e4eee7; color: #172b21; border: none; border-radius: 99px; padding: 14px; font-size: 0.85rem; font-weight: 700; cursor: pointer; margin-top: 8px; }
+</style>
+<link rel="stylesheet" href="ossia-shared-ui.css">
+</head><body>
+<section class="ossia-mobile-page om-me-page" id="view-me">
+  <header class="om-topbar">
+    <div class="om-brand"><span class="om-logo">O<i></i></span><span>OSSIA<small>RSUD Haji</small></span></div>
+    <button class="om-icon-btn" id="meNotifications" type="button" aria-label="Notifikasi" onclick="showOssiaToast('Belum ada notifikasi baru.')">
+      <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path>
+      </svg>
+    </button>
+  </header>
+  <main class="om-content om-me-content">
+    <section class="om-page-intro"><h1>PROFIL PASIEN</h1></section>
+
+    <div class="om-custom-profile-card">
+      <div class="om-custom-avatar">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="100" height="100" rx="50" fill="#DDF3E6"/>
+          <path d="M15 100c3-20 18-31 35-31s32 11 35 31" fill="#8FC9A7"/>
+          <path d="M31 43c0-17 8-27 20-27 13 0 21 10 21 27 0 18-9 29-21 29S31 61 31 43Z" fill="#F2C49D"/>
+          <path d="M29 42c-2-19 8-31 24-31 15 0 24 12 21 30-4-3-7-8-9-13-8 8-21 11-36 10Z" fill="#5B4032"/>
+          <circle cx="43" cy="45" r="2" fill="#26352D"/><circle cx="61" cy="45" r="2" fill="#26352D"/>
+          <path d="M45 57c4 4 10 4 14 0" stroke="#A85E50" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="om-profile-details">
+        <span class="om-badge-pill" id="mePatientName">An. Ahmad Arifin</span>
+        <div class="om-info-text">ID Pasien: <b>OSSIA-20261028-001</b></div>
+      </div>
+      <span aria-hidden="true" style="color:#718279;font-size:22px">›</span>
+    </div>
+
+    <section class="om-profile-menu" aria-label="Informasi pasien">
+      <button type="button" onclick="openModal('modalDataPribadi')"><span class="om-profile-menu-icon">♙</span><span><strong>Informasi pribadi</strong></span><b>›</b></button>
+      <button type="button" onclick="openModal('modalPengaturan')"><span class="om-profile-menu-icon">♙</span><span><strong>Keamanan akun</strong></span><b>›</b></button>
+      <button type="button" onclick="openModal('modalNotifikasi')"><span class="om-profile-menu-icon">♧</span><span><strong>Notifikasi</strong></span><b>›</b></button>
+    </section>
+
+    <p class="om-eyebrow" style="margin:0 4px 8px">PENGATURAN</p>
+    <section class="om-profile-menu" aria-label="Pengaturan aplikasi">
+      <button type="button" onclick="openModal('modalBahasa')"><span class="om-profile-menu-icon">◎</span><span><strong>Bahasa</strong></span><small style="color:#718279">Indonesia</small><b>›</b></button>
+      <button type="button" onclick="openModal('modalPengaturan')"><span class="om-profile-menu-icon">☾</span><span><strong>Mode tampilan</strong></span><small style="color:#718279">Terang</small><b>›</b></button>
+    </section>
+
+    <p class="om-eyebrow" style="margin:0 4px 8px">BANTUAN</p>
+    <section class="om-profile-menu" aria-label="Bantuan">
+      <button type="button" onclick="openModal('modalBantuan')"><span class="om-profile-menu-icon">ⓘ</span><span><strong>Pusat bantuan</strong></span><b>›</b></button>
+      <button type="button" onclick="openModal('modalBantuan')"><span class="om-profile-menu-icon">ⓘ</span><span><strong>Tentang OSSIA</strong></span><b>›</b></button>
+    </section>
+
+    <p class="om-eyebrow" style="margin:0 4px 8px">AKUN</p>
+    <button class="om-logout-btn" type="button" onclick="bukaHalaman('login')"><span>⇥</span><span>Keluar</span></button>
+  </main>
+
+  <!-- ================= KUMPULAN MODAL ================= -->
+
+  <!-- 1. MODAL: DATA PRIBADI -->
+  <dialog class="profile-modal" id="modalDataPribadi">
+    <div class="modal-header-row">
+      <div class="modal-header-left"><h3 class="i18n" data-id="Data Pribadi Akun" data-en="Personal Account Data">Data Pribadi Akun</h3></div>
+      <button class="modal-close-btn" onclick="closeModal('modalDataPribadi')">×</button>
+    </div>
+    <span class="modal-subtitle i18n" data-id="Informasi pasien terdaftar." data-en="Registered patient information.">Informasi pasien terdaftar.</span>
+    
+    <div class="static-info-box">
+      <p style="margin:0 0 6px;"><b class="i18n" data-id="Nama Lengkap:" data-en="Full Name:">Nama Lengkap:</b> <span id="modalPatientName">An. Ahmad Arifin</span></p>
+      <p style="margin:0 0 6px;"><b class="i18n" data-id="No. Rekam Medis:" data-en="Medical Record No:">No. Rekam Medis:</b> RM-PADANG001</p>
+      <p style="margin:0 0 6px;"><b class="i18n" data-id="Umur / Tgl Lahir:" data-en="Age / Date of Birth:">Umur / Tgl Lahir:</b> <span class="i18n" data-id="9 Tahun (12 Mei 2017)" data-en="9 Years (May 12, 2017)">9 Tahun (12 Mei 2017)</span></p>
+      <p style="margin:0 0 0;"><b class="i18n" data-id="Jenis Kelamin:" data-en="Gender:">Jenis Kelamin:</b> <span class="i18n" data-id="Laki-laki" data-en="Male">Laki-laki</span></p>
+    </div>
+
+    <div class="modal-menu-list">
+      <button class="modal-menu-item" onclick="switchModal('modalDataPribadi', 'modalKoreksiBiodata')">
+        <span class="i18n" data-id="Ajukan Koreksi Biodata" data-en="Request Data Correction">Ajukan Koreksi Biodata</span> <b>›</b>
+      </button>
+    </div>
+  </dialog>
+
+  <!-- 1A. SUB-MODAL: KOREKSI BIODATA -->
+  <dialog class="profile-modal" id="modalKoreksiBiodata">
+    <div class="modal-header-row">
+      <div class="modal-header-left">
+        <button class="modal-back-btn" style="display:block;" onclick="switchModal('modalKoreksiBiodata', 'modalDataPribadi')">←</button>
+        <h3 class="i18n" data-id="Koreksi Biodata" data-en="Data Correction">Koreksi Biodata</h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('modalKoreksiBiodata')">×</button>
+    </div>
+    
+    <form onsubmit="event.preventDefault(); showOssiaToast(localStorage.getItem('ossia_language') === 'en' ? 'Request sent to Hospital Admin' : 'Ajuan telah terkirim ke Admin RS'); switchModal('modalKoreksiBiodata', 'modalDataPribadi');">
+      <div class="modal-form-group">
+        <label class="i18n" data-id="Pilih Data yang Salah" data-en="Select Incorrect Data">Pilih Data yang Salah</label>
+        <select required>
+          <option value="" disabled selected class="i18n" data-id="Pilih kategori..." data-en="Select category...">Pilih kategori...</option>
+          <option class="i18n" data-id="Nama Lengkap Pasien" data-en="Patient Full Name">Nama Lengkap Pasien</option>
+          <option class="i18n" data-id="Tanggal Lahir / Umur" data-en="Date of Birth / Age">Tanggal Lahir / Umur</option>
+          <option class="i18n" data-id="Jenis Kelamin" data-en="Gender">Jenis Kelamin</option>
+        </select>
+      </div>
+      <div class="modal-form-group">
+        <label class="i18n" data-id="Data yang Seharusnya (Benar)" data-en="Correct Data Should Be">Data yang Seharusnya (Benar)</label>
+        <textarea rows="3" required></textarea>
+      </div>
+      <button type="submit" class="modal-btn-primary i18n" data-id="Kirim Pengajuan" data-en="Submit Request">Kirim Pengajuan</button>
+    </form>
+  </dialog>
+
+  <!-- 2. MODAL: PENGATURAN & PRIVASI -->
+  <dialog class="profile-modal" id="modalPengaturan">
+    <div class="modal-header-row">
+      <div class="modal-header-left"><h3 class="i18n" data-id="Pengaturan & Privasi" data-en="Settings & Privacy">Pengaturan & Privasi</h3></div>
+      <button class="modal-close-btn" onclick="closeModal('modalPengaturan')">×</button>
+    </div>
+    <span class="modal-subtitle i18n" data-id="Kelola preferensi aplikasi OSSIA." data-en="Manage OSSIA app preferences.">Kelola preferensi aplikasi OSSIA.</span>
+    <div class="modal-menu-list">
+      <button class="modal-menu-item" onclick="switchModal('modalPengaturan', 'modalNotifikasi')"><span class="i18n" data-id="Notifikasi Hasil Skrining" data-en="Screening Notifications">Notifikasi Hasil Skrining</span> <b>›</b></button>
+      <button class="modal-menu-item" onclick="switchModal('modalPengaturan', 'modalBahasa')"><span class="i18n" data-id="Bahasa Aplikasi" data-en="App Language">Bahasa Aplikasi</span> <b>›</b></button>
+      <button class="modal-menu-item" style="color: #d32f2f;" onclick="switchModal('modalPengaturan', 'modalHapusChat')"><span class="i18n" data-id="Hapus Riwayat Chat AI" data-en="Clear AI Chat History">Hapus Riwayat Chat AI</span> <b>›</b></button>
+    </div>
+  </dialog>
+
+  <!-- 2A. SUB-MODAL: NOTIFIKASI -->
+  <dialog class="profile-modal" id="modalNotifikasi">
+    <div class="modal-header-row">
+      <div class="modal-header-left">
+        <button class="modal-back-btn" style="display:block;" onclick="switchModal('modalNotifikasi', 'modalPengaturan')">←</button>
+        <h3 class="i18n" data-id="Pengaturan Notifikasi" data-en="Notification Settings">Pengaturan Notifikasi</h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('modalNotifikasi')">×</button>
+    </div>
+    <form onsubmit="event.preventDefault(); showOssiaToast(localStorage.getItem('ossia_language') === 'en' ? 'Settings saved' : 'Pengaturan disimpan'); switchModal('modalNotifikasi', 'modalPengaturan');">
+      <div class="modal-form-group">
+        <label class="i18n" data-id="Notifikasi Skrining Selesai" data-en="Screening Complete Notification">Notifikasi Skrining Selesai</label>
+        <select><option class="i18n" data-id="Aktifkan" data-en="Enable">Aktifkan</option><option class="i18n" data-id="Matikan" data-en="Disable">Matikan</option></select>
+      </div>
+      <button type="submit" class="modal-btn-primary i18n" data-id="Simpan Pengaturan" data-en="Save Settings">Simpan Pengaturan</button>
+    </form>
+  </dialog>
+
+  <!-- 2B. SUB-MODAL: BAHASA APLIKASI -->
+  <dialog class="profile-modal" id="modalBahasa">
+    <div class="modal-header-row">
+      <div class="modal-header-left">
+        <button class="modal-back-btn" style="display:block;" onclick="switchModal('modalBahasa', 'modalPengaturan')">←</button>
+        <h3 class="i18n" data-id="Bahasa Aplikasi" data-en="App Language">Bahasa Aplikasi</h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('modalBahasa')">×</button>
+    </div>
+    <span class="modal-subtitle i18n" data-id="Pilih bahasa utama untuk antarmuka aplikasi." data-en="Select the main language for the app interface.">Pilih bahasa utama untuk antarmuka aplikasi.</span>
+    
+    <form onsubmit="simpanBahasa(event)">
+      <div class="modal-form-group">
+        <label class="i18n" data-id="Pilihan Bahasa" data-en="Language Options">Pilihan Bahasa</label>
+        <select id="selectBahasa">
+          <option value="id">Bahasa Indonesia</option>
+          <option value="en">English (Bahasa Inggris)</option>
+        </select>
+      </div>
+      <button type="submit" class="modal-btn-primary i18n" data-id="Terapkan Bahasa" data-en="Apply Language">Terapkan Bahasa</button>
+    </form>
+  </dialog>
+
+  <!-- 2C. SUB-MODAL: HAPUS CHAT -->
+  <dialog class="profile-modal" id="modalHapusChat">
+    <div class="modal-header-row">
+      <div class="modal-header-left">
+        <button class="modal-back-btn" style="display:block;" onclick="switchModal('modalHapusChat', 'modalPengaturan')">←</button>
+        <h3 style="color:#d32f2f;" class="i18n" data-id="Hapus Riwayat Chat" data-en="Clear Chat History">Hapus Riwayat Chat</h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('modalHapusChat')">×</button>
+    </div>
+    <span class="modal-subtitle i18n" style="margin-bottom:20px;" data-id="Apakah Anda yakin ingin menghapus semua riwayat percakapan dengan AI? Tindakan ini tidak dapat dibatalkan." data-en="Are you sure you want to delete all AI chat history? This action cannot be undone.">Apakah Anda yakin ingin menghapus semua riwayat percakapan dengan AI? Tindakan ini tidak dapat dibatalkan.</span>
+    <button class="modal-btn-danger i18n" data-id="Ya, Hapus Sekarang" data-en="Yes, Delete Now" onclick="hapusRiwayatChat()">Ya, Hapus Sekarang</button>
+    <button class="modal-btn-secondary i18n" data-id="Batal" data-en="Cancel" onclick="switchModal('modalHapusChat', 'modalPengaturan')">Batal</button>
+  </dialog>
+
+  <!-- 3. MODAL: BANTUAN & PANDUAN -->
+  <dialog class="profile-modal" id="modalBantuan">
+    <div class="modal-header-row">
+      <div class="modal-header-left"><h3 class="i18n" data-id="Bantuan & Panduan" data-en="Help & Guide">Bantuan & Panduan</h3></div>
+      <button class="modal-close-btn" onclick="closeModal('modalBantuan')">×</button>
+    </div>
+    <span class="modal-subtitle i18n" data-id="Pusat bantuan pengguna." data-en="User help center.">Pusat bantuan pengguna.</span>
+    <div class="modal-menu-list">
+      <button class="modal-menu-item" onclick="switchModal('modalBantuan', 'modalPanduanBaca')"><span class="i18n" data-id="Cara Membaca Hasil Skrining" data-en="How to Read Screening Results">Cara Membaca Hasil Skrining</span> <b>›</b></button>
+      <button class="modal-menu-item" onclick="switchModal('modalBantuan', 'modalHubungiAdmin')"><span class="i18n" data-id="Hubungi Dukungan / Admin" data-en="Contact Support / Admin">Hubungi Dukungan / Admin</span> <b>›</b></button>
+    </div>
+  </dialog>
+
+  <!-- 3A. SUB-MODAL: PANDUAN -->
+  <dialog class="profile-modal" id="modalPanduanBaca">
+    <div class="modal-header-row">
+      <div class="modal-header-left">
+        <button class="modal-back-btn" style="display:block;" onclick="switchModal('modalPanduanBaca', 'modalBantuan')">←</button>
+        <h3 class="i18n" data-id="Cara Penggunaan" data-en="How to Use">Cara Penggunaan</h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('modalPanduanBaca')">×</button>
+    </div>
+    <div class="static-info-box i18n" data-id="<b>Langkah Skrining:</b><br>1. Unggah foto X-ray di menu <b>Home</b>.<br>2. Cek hasil di menu <b>Riwayat</b>.<br>3. Gunakan asisten AI di menu <b>Chat</b> jika ada pertanyaan." data-en="<b>Screening Steps:</b><br>1. Upload X-ray photo in <b>Home</b>.<br>2. Check results in <b>History</b>.<br>3. Use AI assistant in <b>Chat</b> if you have questions.">
+      <b>Langkah Skrining:</b><br>1. Unggah foto X-ray di menu <b>Home</b>.<br>2. Cek hasil di menu <b>Riwayat</b>.<br>3. Gunakan asisten AI di menu <b>Chat</b> jika ada pertanyaan.
+    </div>
+  </dialog>
+
+  <!-- 3B. SUB-MODAL: HUBUNGI ADMIN -->
+  <dialog class="profile-modal" id="modalHubungiAdmin">
+    <div class="modal-header-row">
+      <div class="modal-header-left">
+        <button class="modal-back-btn" style="display:block;" onclick="switchModal('modalHubungiAdmin', 'modalBantuan')">←</button>
+        <h3 class="i18n" data-id="Hubungi Admin" data-en="Contact Admin">Hubungi Admin</h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('modalHubungiAdmin')">×</button>
+    </div>
+    <form onsubmit="event.preventDefault(); showOssiaToast(localStorage.getItem('ossia_language') === 'en' ? 'Message sent' : 'Pesan telah terkirim'); switchModal('modalHubungiAdmin', 'modalBantuan');">
+      <div class="modal-form-group">
+        <label class="i18n" data-id="Keluhan / Pesan Anda" data-en="Your Issue / Message">Keluhan / Pesan Anda</label>
+        <textarea rows="4" required></textarea>
+      </div>
+      <button type="submit" class="modal-btn-primary i18n" data-id="Kirim Pesan" data-en="Send Message">Kirim Pesan</button>
+    </form>
+  </dialog>
+
+</section>
+
+<!-- ================= SCRIPT LOGIC ================= -->
+<script>
+  function openModal(id) { document.getElementById(id).showModal(); }
+  function closeModal(id) { document.getElementById(id).close(); }
+  function switchModal(closeId, openId) {
+    document.getElementById(closeId).close();
+    document.getElementById(openId).showModal();
+  }
+  
+  // Fungsi Pengeksekusi Terjemahan Bahasa (Translator Engine)
+  function applyLanguage(lang) {
+    document.querySelectorAll('.i18n').forEach(el => {
+      if (el.hasAttribute('data-' + lang)) {
+        el.innerHTML = el.getAttribute('data-' + lang);
+      }
+    });
+
+    // Translate bottom navigation bar if it exists
+    const navRiwayat = document.querySelector('.mobile-nav button:nth-child(2) span:nth-child(2)');
+    if (navRiwayat) {
+      navRiwayat.textContent = lang === 'en' ? 'History' : 'Riwayat';
+    }
+  }
+  
+  // Fungsi Menyimpan dan Menjalankan Perubahan Bahasa Saat Diklik
+  function simpanBahasa(event) {
+    event.preventDefault();
+    const bahasaPilihan = document.getElementById('selectBahasa').value;
+    localStorage.setItem('ossia_language', bahasaPilihan);
+    
+    // Langsung terjemahkan halaman
+    applyLanguage(bahasaPilihan);
+    
+    if(bahasaPilihan === 'en') {
+      showOssiaToast('Language updated successfully!');
+    } else {
+      showOssiaToast('Pengaturan bahasa berhasil disimpan!');
+    }
+    
+    switchModal('modalBahasa', 'modalPengaturan');
+  }
+
+  function hapusRiwayatChat() {
+    localStorage.removeItem('ossia_chat_history'); 
+    localStorage.removeItem('chatMessages'); 
+    const lang = localStorage.getItem('ossia_language') || 'id';
+    showOssiaToast(lang === 'en' ? 'AI chat history cleared.' : 'Riwayat chat AI berhasil dibersihkan.');
+    switchModal('modalHapusChat', 'modalPengaturan');
+  }
+</script>
+
+<script>
+/* Sinkronisasi Data Saat Halaman Dimuat */
+(function () {
+  const PROFILE_KEY = "ossia_patient_profile";
+  const DEFAULT_NAME = "An. Ahmad Arifin";
+  
+  document.addEventListener("DOMContentLoaded", function () {
+    // 1. Setup & Terapkan Bahasa Tersimpan
+    const savedLang = localStorage.getItem('ossia_language') || 'id';
+    if(document.getElementById('selectBahasa')) {
+      document.getElementById('selectBahasa').value = savedLang;
+    }
+    
+    // 2. Sinkronisasi Nama Pasien
+    const nameElement = document.getElementById("mePatientName");
+    const modalNameElement = document.getElementById("modalPatientName");
+    if (nameElement) {
+      let profile = {};
+      try {
+        profile = JSON.parse(localStorage.getItem(PROFILE_KEY) || "{}");
+      } catch (error) {}
+      
+      const existingName = String(nameElement.textContent || "").trim();
+      const savedName = String(profile.name || profile.nama || "").trim();
+      const patientName = savedName || existingName || DEFAULT_NAME;
+      
+      nameElement.textContent = patientName;
+      if (modalNameElement) modalNameElement.textContent = patientName;
+      
+      profile.name = patientName;
+      try { localStorage.setItem(PROFILE_KEY, JSON.stringify(profile)); } catch (e) {}
+    }
+
+    // 3. Jalankan terjemahan bahasa setelah elemen Nav dimuat (delay tipis)
+    setTimeout(() => { applyLanguage(savedLang); }, 50);
+  });
+})();
+</script>
+
+<script>
+(function () {
+  const pages = { landing:"landing.html", login:"login.html", home:"home.html", dashboard:"home.html",
+    riwayat:"riwayat.html", chat:"chat.html", chatbot:"chat.html", me:"me.html" };
+  window.bukaHalaman = function (target) { window.location.href = pages[target] || "index.html"; };
+  window.showOssiaToast = function (message) {
+    let toast = document.getElementById("ossia-global-toast");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "ossia-global-toast";
+      toast.className = "om-toast";
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add("show");
+    window.setTimeout(() => toast.classList.remove("show"), 2500);
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    const current = location.pathname.split("/").pop().toLowerCase().replace(".html", "");
+    if (!["home", "riwayat", "chat", "me"].includes(current) || document.querySelector(".mobile-nav")) return;
+    const items = [["home","⌂","Home"],["riwayat","▤","Riwayat"],["chat","▢","Chat"],["me","♙","Me"]];
+    const nav = document.createElement("nav");
+    nav.className = "mobile-nav";
+    nav.setAttribute("aria-label", "Navigasi utama");
+    nav.innerHTML = items.map(([id, icon, label]) =>
+      `<button type="button" class="${current===id?"active":""}" aria-label="${label}" ${current===id?'aria-current="page"':""} onclick="bukaHalaman('${id}')"><span aria-hidden="true">${icon}</span><span>${label}</span></button>`
+    ).join("");
+    document.body.appendChild(nav);
+  });
+})();
+</script>
+</body></html>

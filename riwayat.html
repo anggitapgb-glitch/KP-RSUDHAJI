@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a4f2b">
+<title>OSSIA | Riwayat Pemeriksaan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="home.css">
+<link rel="stylesheet" href="riwayat.css">
+<link rel="stylesheet" href="ossia-shared-ui.css">
+</head>
+<body>
+<section class="ossia-mobile-page history-page" id="view-riwayat">
+  <header class="om-topbar">
+    <div class="om-brand"><span class="om-logo">O<i></i></span><span>OSSIA<small>RSUD Haji</small></span></div>
+    <button class="om-icon-btn" id="historyNotifications" type="button" aria-label="Notifikasi" title="Notifikasi">
+      <svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+        <path d="M10 21h4"></path>
+      </svg><b></b>
+    </button>
+  </header>
+  <main class="om-content">
+    <section class="om-page-intro"><p class="om-eyebrow">ARSIP PEMERIKSAAN</p><h1>Riwayat pemeriksaan</h1><p>Lihat kembali ringkasan pemeriksaan sebelumnya.</p></section>
+    <section class="om-history-summary">
+      <div><span>Total pemeriksaan</span><strong id="historyTotal">0</strong></div><i></i><div><span>Perlu perhatian</span><strong class="om-amber-text" id="historyAttention">0</strong></div>
+    </section>
+    <label class="om-search"><span>⌕</span><input id="historySearch" type="search" placeholder="Cari tanggal, ID, atau status..."><button id="historyClear" type="button" hidden aria-label="Hapus pencarian">×</button></label>
+    <div class="om-filter-row" id="historyFilters" role="group" aria-label="Filter status pemeriksaan">
+      <button type="button" class="selected" data-history-filter="all" aria-pressed="true">Semua</button>
+      <button type="button" data-history-filter="normal" aria-pressed="false">Normal</button>
+      <button type="button" data-history-filter="attention" aria-pressed="false">Perlu Perhatian</button>
+    </div>
+    <section class="om-history-list" id="historyList" aria-live="polite"></section>
+    <p class="om-disclaimer">Riwayat pemeriksaan akan muncul di sini setelah pemeriksaan tersimpan. Integrasi database cloud dilakukan pada tahap berikutnya.</p>
+  </main>
+  <dialog class="om-detail-dialog" id="historyDetailDialog">
+    <form method="dialog"><button class="om-dialog-close" aria-label="Tutup detail">×</button></form>
+    <div id="historyDetailContent"></div>
+  </dialog>
+</section>
+
+
+
+<script src="riwayat.js"></script>
+
+
+<script>
+(function () {
+  const pages = {
+    landing: "landing.html",
+    login: "login.html",
+    home: "home.html",
+    dashboard: "home.html",
+    riwayat: "riwayat.html",
+    chat: "chat.html",
+    chatbot: "chat.html",
+    me: "me.html"
+  };
+
+  window.bukaHalaman = function (target) {
+    window.location.href = pages[target] || "index.html";
+  };
+
+  window.showOssiaToast = function (message) {
+    let toast = document.getElementById("ossia-global-toast");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "ossia-global-toast";
+      toast.className = "toast";
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add("show");
+    window.setTimeout(() => toast.classList.remove("show"), 2500);
+  };
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const file = window.location.pathname.split("/").pop().toLowerCase();
+    const current = file.replace(".html", "");
+    if (!["home", "riwayat", "chat", "me"].includes(current)) return;
+
+    // Avoid duplicate nav if script is included twice.
+    if (document.querySelector(".mobile-nav")) return;
+
+    const nav = document.createElement("nav");
+    nav.className = "mobile-nav";
+    nav.setAttribute("aria-label", "Navigasi utama");
+    const items = [
+      ["home", "⌂", "Home"],
+      ["riwayat", "▤", "Riwayat"],
+      ["chat", "▢", "Chat"],
+      ["me", "♙", "Me"]
+    ];
+    nav.innerHTML = items.map(([id, icon, label]) =>
+      `<button type="button" class="${current === id ? "active" : ""}" aria-label="${label}" ${current === id ? 'aria-current="page"' : ""} onclick="bukaHalaman('${id}')"><span aria-hidden="true">${icon}</span><span>${label}</span></button>`
+    ).join("");
+    document.body.appendChild(nav);
+  });
+})();
+</script>
+
+</body>
+</html>

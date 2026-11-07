@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a4f2b">
+<title>OSSIA | Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="home.css">
+<link rel="stylesheet" href="ossia-shared-ui.css">
+</head>
+<body>
+<section class="ossia-mobile-page home-page" id="view-dashboard">
+  <header class="om-topbar">
+    <div class="om-brand"><span class="om-logo">O<i></i></span><span>OSSIA<small>RSUD Haji</small></span></div>
+    <button class="om-icon-btn" id="homeNotifications" type="button" aria-label="Notifikasi" title="Notifikasi">
+      <svg class="om-bell-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+        <path d="M10 21h4"></path>
+      </svg>
+      <b aria-hidden="true"></b>
+    </button>
+  </header>
+
+  <main class="om-content">
+    <section class="om-welcome">
+      <div><p class="om-eyebrow">DASHBOARD PASIEN</p><h1>Halo, <span id="homePatientName">An. Ahmad Arifin</span>! <span>👋</span></h1><p>Pantau pemeriksaan usia tulang karpalmu di sini.</p></div>
+      <div class="om-avatar">👦</div>
+    </section>
+
+    <section class="om-card upload-card">
+      <div class="om-section-title"><div><p class="om-eyebrow">PEMERIKSAAN BARU</p><h2>Analisis X-Ray Karpal</h2><p>Unggah citra untuk memulai pemeriksaan.</p></div></div>
+      <label class="om-dropzone" id="homeDropzone" for="homeXrayFile">
+        <span class="om-upload-symbol">⇧</span>
+        <strong id="homeUploadTitle">Pilih atau seret file X-ray</strong>
+        <span id="homeUploadHint">PNG atau JPG dari perangkatmu</span>
+        <small>PNG atau JPG · Maks. 10 MB</small>
+        <input type="file" id="homeXrayFile" accept=".png,.jpg,.jpeg,image/png,image/jpeg">
+      </label>
+      <div class="om-file-preview" id="homeFilePreview" hidden>
+        <img id="homePreviewImage" alt="Pratinjau gambar yang dipilih">
+        <div class="om-file-meta"><strong id="homeFileName"></strong><span id="homeFileSize"></span><small>Pratinjau file X-ray</small></div>
+        <button type="button" id="homeRemoveFile" aria-label="Hapus file">×</button>
+      </div>
+      <button class="om-primary-btn" type="button" id="homeTestUpload" disabled>Lanjutkan Analisis <span>→</span></button>
+      <p class="om-helper" id="homeUploadMessage">Pilih citra X-ray untuk memulai pemeriksaan.</p>
+    </section>
+
+    <section class="om-section">
+      <div class="om-section-title">
+        <div><p class="om-eyebrow">RINGKASAN</p><h2>Hasil pemeriksaan terakhir</h2></div>
+        <button class="om-text-btn" type="button" onclick="bukaHalaman('riwayat')">Lihat riwayat →</button>
+      </div>
+      <article class="om-card om-empty-results">
+        <div class="om-empty-icon" aria-hidden="true">
+          <svg class="om-history-icon" viewBox="0 0 24 24" width="24" height="24"
+               fill="none" stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5.5" y="4.5" width="13" height="15" rx="1.2"></rect>
+            <path d="M8.5 8h7"></path>
+            <path d="M8.5 12h7"></path>
+            <path d="M8.5 16h7"></path>
+          </svg>
+        </div>
+        <h3>Belum ada hasil pemeriksaan</h3>
+        <p>Hasil pemeriksaan akan muncul di sini setelah kamu melakukan pemeriksaan.</p>
+        <button class="om-empty-link" type="button" onclick="bukaHalaman('riwayat')">Buka riwayat pemeriksaan →</button>
+      </article>
+    </section>
+  </main>
+</section>
+
+
+
+<script src="home.js"></script>
+<script>
+/* Sinkronisasi nama pasien untuk halaman Home dan Me. */
+(function () {
+  const PROFILE_KEY = "ossia_patient_profile";
+  const DEFAULT_NAME = "An. Ahmad Arifin";
+  document.addEventListener("DOMContentLoaded", function () {
+    const nameElement = document.getElementById("homePatientName");
+    if (!nameElement) return;
+    let profile = {};
+    try {
+      profile = JSON.parse(localStorage.getItem(PROFILE_KEY) || "{}");
+      if (!profile || typeof profile !== "object" || Array.isArray(profile)) profile = {};
+    } catch (error) { profile = {}; }
+    const savedName = String(profile.name || profile.nama || "").trim();
+    const patientName = savedName || DEFAULT_NAME;
+    nameElement.textContent = patientName;
+    if (!savedName) {
+      profile.name = patientName;
+      try { localStorage.setItem(PROFILE_KEY, JSON.stringify(profile)); }
+      catch (error) { console.warn("Nama pasien tidak dapat disimpan di browser.", error); }
+    }
+  });
+})();
+</script>
+
+
+<script>
+(function () {
+  const pages = {
+    landing: "landing.html",
+    login: "login.html",
+    home: "home.html",
+    dashboard: "home.html",
+    riwayat: "riwayat.html",
+    chat: "chat.html",
+    chatbot: "chat.html",
+    me: "me.html"
+  };
+
+  window.bukaHalaman = function (target) {
+    window.location.href = pages[target] || "index.html";
+  };
+
+  window.showOssiaToast = function (message) {
+    let toast = document.getElementById("ossia-global-toast");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "ossia-global-toast";
+      toast.className = "toast";
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add("show");
+    window.setTimeout(() => toast.classList.remove("show"), 2500);
+  };
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const file = window.location.pathname.split("/").pop().toLowerCase();
+    const current = file.replace(".html", "");
+    if (!["home", "riwayat", "chat", "me"].includes(current)) return;
+
+    // Avoid duplicate nav if script is included twice.
+    if (document.querySelector(".mobile-nav")) return;
+
+    const nav = document.createElement("nav");
+    nav.className = "mobile-nav";
+    nav.setAttribute("aria-label", "Navigasi utama");
+    const items = [
+      ["home", "⌂", "Home"],
+      ["riwayat", "▤", "Riwayat"],
+      ["chat", "▢", "Chat"],
+      ["me", "♙", "Me"]
+    ];
+    nav.innerHTML = items.map(([id, icon, label]) =>
+      `<button type="button" class="${current === id ? "active" : ""}" aria-label="${label}" ${current === id ? 'aria-current="page"' : ""} onclick="bukaHalaman('${id}')"><span aria-hidden="true">${icon}</span><span>${label}</span></button>`
+    ).join("");
+    document.body.appendChild(nav);
+  });
+})();
+</script>
+
+</body>
+</html>
