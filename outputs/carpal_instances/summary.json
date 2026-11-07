@@ -1,0 +1,28 @@
+{
+  "summary": {
+    "detected_instances": 8,
+    "total_bone_area_px": 109634,
+    "total_candidate_ossification_area_px": 31644,
+    "total_candidate_ratio_percent": 28.863,
+    "otsu_threshold": 136.0,
+    "selected_polarity": "bright",
+    "bright_foreground_fraction": 0.466779,
+    "dark_foreground_fraction": 0.533221,
+    "bone_foreground_fraction_of_analysis": 0.467666
+  },
+  "settings": {
+    "polarity": "auto",
+    "selected_polarity": "bright",
+    "min_bone_area": 30,
+    "max_instances": 8,
+    "ossification_percentile": 72.0,
+    "close_kernel": 3,
+    "use_clahe": true
+  },
+  "warnings": [
+    "RSNA menyediakan label usia tulang, bukan ground-truth mask segmentasi piksel.",
+    "Komponen bernomor adalah komponen algoritmik, bukan identitas tulang karpal.",
+    "Mask Otsu dan kandidat intensitas bukan anotasi anatomi atau pusat osifikasi tervalidasi.",
+    "Rasio kandidat hanya deskripsi intensitas dalam mask; bukan rasio osifikasi klinis."
+  ]
+}

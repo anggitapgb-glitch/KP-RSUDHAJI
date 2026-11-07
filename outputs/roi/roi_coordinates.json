@@ -1,0 +1,44 @@
+{
+    "source_image": "outputs\\preprocessing\\03_preprocessed.png",
+    "x": 912,
+    "y": 1851,
+    "width": 644,
+    "height": 380,
+    "image_width": 2320,
+    "image_height": 2920,
+    "roi_file": "outputs/roi/carpal_roi.png",
+    "roi_mask_file": "outputs/roi/carpal_roi_mask.png",
+    "preview_file": "outputs/roi/roi_preview.png",
+    "selection_type": "polygon",
+    "polygon_points_global": [
+        [
+            916,
+            1851
+        ],
+        [
+            1555,
+            1869
+        ],
+        [
+            1500,
+            2135
+        ],
+        [
+            1416,
+            2212
+        ],
+        [
+            1409,
+            2230
+        ],
+        [
+            942,
+            2226
+        ],
+        [
+            912,
+            1854
+        ]
+    ],
+    "coordinate_convention": "pixel; origin top-left; x rightward; y downward"
+}

@@ -1,0 +1,9 @@
+﻿instance_id,bone_area_px,candidate_ossification_area_px,candidate_ratio_percent,label_type
+1,1542,25,1.621,algorithmic_component_not_anatomical_name
+2,1709,261,15.272,algorithmic_component_not_anatomical_name
+3,394,218,55.33,algorithmic_component_not_anatomical_name
+4,16607,4154,25.014,algorithmic_component_not_anatomical_name
+5,46118,10338,22.416,algorithmic_component_not_anatomical_name
+6,25283,9683,38.298,algorithmic_component_not_anatomical_name
+7,5555,1699,30.585,algorithmic_component_not_anatomical_name
+8,12426,5266,42.379,algorithmic_component_not_anatomical_name
