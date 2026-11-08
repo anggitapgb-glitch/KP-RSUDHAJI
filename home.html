@@ -8,9 +8,83 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="home.css">
 <link rel="stylesheet" href="ossia-shared-ui.css">
+
+<style>
+  /* Dashboard pasien */
+  #view-dashboard .om-welcome .om-eyebrow {
+    font-size: 11px !important;
+    letter-spacing: 1px !important;
+  }
+
+  /* Halo, An. Ahmad Arifin! */
+  #view-dashboard .om-welcome h1 {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    line-height: 1.3 !important;
+    letter-spacing: -0.3px !important;
+    margin-bottom: 7px !important;
+  }
+
+  /* Nama pasien mengikuti ukuran Halo */
+  #view-dashboard .om-welcome h1 #homePatientName {
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    line-height: inherit !important;
+  }
+
+  /* Emoji tangan */
+  #view-dashboard .om-welcome h1 > span:last-child {
+    font-size: 17px !important;
+  }
+
+  /* Deskripsi di bawah sapaan */
+  #view-dashboard .om-welcome p:not(.om-eyebrow) {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Judul Analisis X-Ray Karpal */
+  #view-dashboard .upload-card .om-section-title h2 {
+    font-size: 17px !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Deskripsi pemeriksaan */
+  #view-dashboard .upload-card .om-section-title
+  p:not(.om-eyebrow) {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Teks utama di kotak upload */
+  #view-dashboard .om-dropzone strong {
+    font-size: 14px !important;
+  }
+
+  /* Keterangan format upload */
+  #view-dashboard .om-dropzone #homeUploadHint {
+    font-size: 13px !important;
+  }
+
+  #view-dashboard .om-dropzone small {
+    font-size: 11px !important;
+  }
+
+  /* Tombol analisis */
+  #view-dashboard .om-primary-btn {
+    font-size: 13px !important;
+  }
+
+  /* Keterangan bawah tombol */
+  #view-dashboard .om-helper {
+    font-size: 12px !important;
+  }
+</style>
+
 </head>
 <body>
 <section class="ossia-mobile-page home-page" id="view-dashboard">
