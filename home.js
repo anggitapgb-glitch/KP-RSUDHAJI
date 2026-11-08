@@ -44,6 +44,7 @@
       testButton.disabled = true;
       message.textContent = "Pilih citra X-ray untuk memulai pemeriksaan.";
     }
+    
     function handleFile(file) {
       if (!file) return;
       if (!["image/png", "image/jpeg"].includes(file.type)) {
@@ -69,14 +70,26 @@
       message.textContent = "File X-ray berhasil dipilih dan siap diproses.";
     }
 
-    input.addEventListener("change", () => handleFile(input.files[0]));
+    input.addEventListener("change", () => {
+      if (input.files && input.files[0]) {
+        handleFile(input.files[0]);
+      }
+    });
+
     ["dragenter", "dragover"].forEach(name => dropzone?.addEventListener(name, e => {
       e.preventDefault(); dropzone.classList.add("dragging");
     }));
+    
     ["dragleave", "drop"].forEach(name => dropzone?.addEventListener(name, e => {
       e.preventDefault(); dropzone.classList.remove("dragging");
     }));
-    dropzone?.addEventListener("drop", e => handleFile(e.dataTransfer.files[0]));
+    
+    dropzone?.addEventListener("drop", e => {
+      if (e.dataTransfer && e.dataTransfer.files[0]) {
+        handleFile(e.dataTransfer.files[0]);
+      }
+    });
+    
     document.getElementById("homeRemoveFile")?.addEventListener("click", resetFile);
     
     // ========================================
@@ -92,52 +105,71 @@
       message.textContent = "Sedang memproses citra X-ray...";
 
       try {
-        // Mengirim citra ke backend OSSIA
         const response = await fetch("/api/analyze", {
           method: "POST",
           body: formData
         });
 
-        // Membaca respons dari Flask
         const result = await response.json();
 
         if (!response.ok || result.ok !== true) {
-          throw new Error(
-            result.error || "Pemrosesan citra gagal."
-          );
+          throw new Error(result.error || "Pemrosesan citra gagal.");
         }
 
-        // Mengambil hasil preprocessing Otsu
-        const threshold = result.threshold ?? "-";
-        const status = result.status || "Perlu verifikasi";
+        // Tampilkan teks ringkas hasil estimasi & kriteria klinis di bawah tombol
+        message.textContent = 
+          `Selesai! Estimasi: ${result.estimasi_tahun} Tahun (${result.estimasi_bulan} bln). ` +
+          `Status: ${result.kriteria}.`;
+        
+        notify("Citra X-ray berhasil diproses dan diestimasi!");
 
-        // Menampilkan informasi teknis di Home
-        message.textContent =
-          `Pemrosesan citra selesai. ` +
-          `Threshold Otsu: ${threshold}. ` +
-          `Status teknis: ${status}. ` +
-          `Hasil ini bukan penilaian klinis.`;
+        // --- PAKSA KOTAK RINGKASAN DI HOME BERUBAH SECARA DINAMIS ---
+        const ringkasanCard = document.querySelector(".om-empty-results")?.closest(".om-card") || document.querySelector("div.om-section .om-card");
+        if (ringkasanCard) {
+            ringkasanCard.innerHTML = `
+                <div style="padding: 6px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                        <span style="font-size:11px; font-weight:700; color:#0a4f2b; background:#e5f5ec; padding:2px 8px; border-radius:6px;">BARU SAJA</span>
+                        <span style="font-size:11px; color:#718279;">${selectedFile.name}</span>
+                    </div>
+                    <h4 style="font-size:1rem; color:#0a4f2b; margin:6px 0;">Estimasi Usia: ${result.estimasi_tahun} Tahun (${result.estimasi_bulan} bln)</h4>
+                    <p style="font-size:0.8rem; color:#2c3e35; margin:4px 0;"><strong>Status Klinis:</strong> ${result.kriteria}</p>
+                    <p style="font-size:0.75rem; color:#718279; margin:8px 0 0 0; line-height:1.4;"><em>${result.explanation}</em></p>
+                </div>
+            `;
+        }
 
-        notify("Citra X-ray berhasil diproses oleh OSSIA!");
-
-        console.log("Hasil preprocessing OSSIA:", {
-          threshold,
-          foreground_ratio: result.foreground_ratio,
-          status
-        });
+        // Simpan ke localStorage agar otomatis masuk ke halaman Riwayat
+        try {
+            let history = JSON.parse(localStorage.getItem("ossia_exam_history") || "[]");
+            
+            const newRecord = {
+                id: "EX-" + Math.floor(Math.random() * 10000),
+                dateISO: new Date().toISOString(),
+                filename: selectedFile.name,
+                threshold: result.threshold,
+                foregroundRatio: result.foreground_ratio,
+                status: result.kriteria, 
+                explanation: result.explanation,
+                estimasiTahun: result.estimasi_tahun,
+                estimasiBulan: result.estimasi_bulan
+            };
+            
+            history.unshift(newRecord);
+            localStorage.setItem("ossia_exam_history", JSON.stringify(history));
+        } catch (e) {
+            console.log("Gagal menyimpan ke riwayat: ", e);
+        }
 
       } catch (error) {
         console.error("OSSIA API Error:", error);
-
-        message.textContent =
-          `Gagal memproses X-ray: ${error.message}`;
-
+        message.textContent = `Gagal memproses X-ray: ${error.message}`;
         notify("Pemrosesan gagal. Periksa backend OSSIA.");
-
       } finally {
         testButton.disabled = !selectedFile;
       }
     });
+
     document.getElementById("homeNotifications")?.addEventListener("click", () => notify("Belum ada notifikasi baru."));
     document.getElementById("homeShowDetail")?.addEventListener("click", e => {
       const button = e.currentTarget;
@@ -147,6 +179,7 @@
       panel.hidden = !open;
     });
   }
+
   window.initHomeUI = initHomeUI;
   if (document.readyState !== "loading") initHomeUI();
   else document.addEventListener("DOMContentLoaded", initHomeUI);

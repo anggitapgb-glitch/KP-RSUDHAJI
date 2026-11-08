@@ -69,7 +69,7 @@
 .om-toast { position:fixed; z-index:100; left:50%; bottom:85px; transform:translate(-50%,12px); opacity:0; pointer-events:none; background:#153e29; color:white; border-radius:12px; padding:10px 14px; max-width:calc(100% - 28px); font-size:.72rem; transition:.2s; }
 .om-toast.show { opacity:1; transform:translate(-50%,0); }
 @media(min-width:700px) {
-  .ossia-mobile-page { max-width:100%; min-height:calc(100dvh - 20px); padding:0 0 20px; }
+  .ossia-mobile-page { max-width:100%; padding:0 0 20px; }
   .om-topbar { padding:0 28px; }
   .om-content { max-width:1060px; margin:0 auto; padding:26px 28px; }
   .om-welcome h1,.om-page-intro h1 { font-size:1.8rem; }
@@ -91,7 +91,6 @@ body > .ossia-mobile-page { width: min(390px, 100vw) !important; max-width: none
   body > .history-page .om-content { max-width: none !important; }
 }
 
-
 /* Empty state: no sample examination results are shown until a real result exists. */
 .om-empty-results { display:flex; flex-direction:column; align-items:center; text-align:center; padding:25px 18px; }
 .om-empty-icon { width:58px; height:58px; display:grid; place-items:center; border-radius:19px; margin-bottom:13px; color:var(--om-green); background:linear-gradient(135deg,#e2f4e9,#f4faf6); font-size:29px; }
@@ -111,11 +110,32 @@ body > .ossia-mobile-page { width: min(390px, 100vw) !important; max-width: none
 .om-dropzone small { display:block; }
 .om-primary-btn { min-height:46px; }
 .om-file-meta small { color:var(--om-muted); }
-@media (min-width:431px) {
-  body > .ossia-mobile-page { height:min(844px,100dvh) !important; min-height:0 !important; overflow-y:auto !important; overflow-x:hidden !important; padding-bottom:78px !important; }
-  body > .ossia-mobile-page .om-topbar { position:sticky; top:0; z-index:5; }
+
+/* KUNCI POSISI SCROLLBAR DI DALAM KOTAK BINGKAI HP */
+@media (min-width: 431px) {
+  body > .ossia-mobile-page { 
+    height: 844px !important; 
+    max-height: 844px !important; 
+    overflow-y: scroll !important; 
+    overflow-x: hidden !important; 
+    padding-bottom: 78px !important;
+  }
+  html, body {
+    overflow: hidden !important;
+    height: 100% !important;
+  }
+  .om-topbar { position: sticky; top: 0; z-index: 5; }
 }
-@media (max-width:430px) {
-  body > .ossia-mobile-page { height:100dvh !important; min-height:0 !important; overflow-y:auto !important; padding-bottom:78px !important; border-radius:0 !important; }
-  .om-topbar { position:sticky; top:0; z-index:5; }
+
+@media (max-width: 430px) {
+  body > .ossia-mobile-page { 
+    height: 100dvh !important; 
+    overflow-y: scroll !important; 
+    padding-bottom: 78px !important; 
+  }
+  html, body {
+    overflow: hidden !important;
+    height: 100% !important;
+  }
+  .om-topbar { position: sticky; top: 0; z-index: 5; }
 }

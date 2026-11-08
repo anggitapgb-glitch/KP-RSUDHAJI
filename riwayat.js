@@ -56,7 +56,7 @@
           <div><span>Ambang Otsu</span><strong>${threshold}</strong></div>
           <div><span>Area mask</span><strong>${area}</strong></div>
         </div>
-        <div class="om-history-bottom"><p>Estimasi usia tulang: <strong>Belum tersedia</strong></p>
+        <div class="om-history-bottom"><p>Estimasi usia tulang: <strong>${r.estimasiTahun ? r.estimasiTahun + ' Tahun (' + r.estimasiBulan + ' bln)' : 'Belum tersedia'}</strong></p>
           <button class="om-detail-button" type="button" data-detail-id="${id}">Detail hasil →</button>
         </div>
       </article>`;

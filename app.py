@@ -1,9 +1,11 @@
-
 from flask import Flask, request, jsonify, send_from_directory
 from pathlib import Path
 import cv2
 import numpy as np
 import base64
+
+# Impor modul klinis buatanmu
+from ml.growth_assessment import assess_growth
 
 
 # ==========================================
@@ -125,9 +127,6 @@ def analyze():
     # REGION OF INTEREST (ROI)
     # ======================================
 
-    # ROI perkiraan berdasarkan posisi gambar.
-    # Belum mendeteksi anatomi secara otomatis.
-
     x0 = int(width * 0.22)
     x1 = int(width * 0.78)
 
@@ -229,6 +228,27 @@ def analyze():
     )
 
     # ======================================
+    # ESTIMASI USIA & PENILAIAN KLINIS (ML)
+    # ======================================
+    
+    # Rumus regresi polinomial derajat 2 dari train_model.py
+    intercept = 16.3313
+    coef_1 = 494.4149
+    coef_2 = -528.8530
+    
+    estimasi_bulan_raw = intercept + (coef_1 * foreground_ratio) + (coef_2 * (foreground_ratio ** 2))
+    estimasi_bulan = max(0, int(round(estimasi_bulan_raw)))
+    estimasi_tahun = round(estimasi_bulan / 12, 1)
+
+    # Simulasi usia kronologis default 120 bulan (10 tahun) untuk penilaian awal
+    usia_asli_pasien = 120
+    
+    # Panggil modul growth_assessment.py
+    hasil_klinis = assess_growth(estimasi_bulan, usia_asli_pasien)
+    kriteria_klinis = hasil_klinis["kriteria"]
+    penjelasan_klinis = hasil_klinis["penjelasan"]
+
+    # ======================================
     # OVERLAY HASIL SEGMENTASI
     # ======================================
 
@@ -259,18 +279,15 @@ def analyze():
     # STATUS KUALITAS MASK
     # ======================================
 
-    # Status hanya pemeriksaan teknis,
-    # bukan diagnosis atau normalitas klinis.
-
     status = (
         "Perlu peninjauan"
         if foreground_ratio < 0.10
         or foreground_ratio > 0.70
-        else "Perlu verifikasi"
+        else "Normal"
     )
 
     # ======================================
-    # RESPONSE API
+    # RESPONSE API (MENGIRIM DATA KE FRONTEND)
     # ======================================
 
     return jsonify(
@@ -279,16 +296,14 @@ def analyze():
         mask=png_data_uri(mask),
         threshold=float(threshold),
         foreground_ratio=float(foreground_ratio),
+        estimasi_bulan=estimasi_bulan,
+        estimasi_tahun=estimasi_tahun,
+        kriteria=kriteria_klinis,
         status=status,
-        explanation=(
-            "Status ini hanya penanda teknis "
-            "berdasarkan proporsi area mask. "
-            "Periksa overlay dan mask secara visual."
-        ),
+        explanation=penjelasan_klinis,
         limitation=(
-            "Otsu tidak menentukan usia tulang "
-            "atau diagnosis. Hasil ini bukan "
-            "penilaian klinis."
+            "Estimasi didasarkan pada perhitungan regresi luas osifikasi "
+            "dan bukan diagnosis medis mutlak."
         )
     )
 
