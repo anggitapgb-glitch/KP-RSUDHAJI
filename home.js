@@ -78,9 +78,65 @@
     }));
     dropzone?.addEventListener("drop", e => handleFile(e.dataTransfer.files[0]));
     document.getElementById("homeRemoveFile")?.addEventListener("click", resetFile);
-    testButton.addEventListener("click", () => {
+    
+    // ========================================
+    // INTEGRASI BACKEND OSSIA - FLASK
+    // ========================================
+    testButton.addEventListener("click", async () => {
       if (!selectedFile) return;
-      notify("Tampilan sudah siap. Backend analisis belum dihubungkan pada file JavaScript ini.");
+
+      const formData = new FormData();
+      formData.append("image", selectedFile);
+
+      testButton.disabled = true;
+      message.textContent = "Sedang memproses citra X-ray...";
+
+      try {
+        // Mengirim citra ke backend OSSIA
+        const response = await fetch("/api/analyze", {
+          method: "POST",
+          body: formData
+        });
+
+        // Membaca respons dari Flask
+        const result = await response.json();
+
+        if (!response.ok || result.ok !== true) {
+          throw new Error(
+            result.error || "Pemrosesan citra gagal."
+          );
+        }
+
+        // Mengambil hasil preprocessing Otsu
+        const threshold = result.threshold ?? "-";
+        const status = result.status || "Perlu verifikasi";
+
+        // Menampilkan informasi teknis di Home
+        message.textContent =
+          `Pemrosesan citra selesai. ` +
+          `Threshold Otsu: ${threshold}. ` +
+          `Status teknis: ${status}. ` +
+          `Hasil ini bukan penilaian klinis.`;
+
+        notify("Citra X-ray berhasil diproses oleh OSSIA!");
+
+        console.log("Hasil preprocessing OSSIA:", {
+          threshold,
+          foreground_ratio: result.foreground_ratio,
+          status
+        });
+
+      } catch (error) {
+        console.error("OSSIA API Error:", error);
+
+        message.textContent =
+          `Gagal memproses X-ray: ${error.message}`;
+
+        notify("Pemrosesan gagal. Periksa backend OSSIA.");
+
+      } finally {
+        testButton.disabled = !selectedFile;
+      }
     });
     document.getElementById("homeNotifications")?.addEventListener("click", () => notify("Belum ada notifikasi baru."));
     document.getElementById("homeShowDetail")?.addEventListener("click", e => {

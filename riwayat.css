@@ -1,72 +1,558 @@
-/* Mobile-first styling for Riwayat only. */
-.history-page .om-page-intro { margin:3px 1px 19px; }
-.history-page .om-page-intro h1 { font-family:var(--font-head,"Bricolage Grotesque",sans-serif); font-size:1.5rem; margin:0 0 6px; }
-.history-page .om-history-summary { display:grid; grid-template-columns:1fr 1px 1fr; align-items:center; gap:14px; background:#fff; border:1px solid #e4eee7; border-radius:16px; padding:15px; box-shadow:0 7px 22px rgba(10,79,43,.045); margin-bottom:15px; }
-.om-history-summary>div { display:flex; flex-direction:column; gap:4px; }
-.om-history-summary span { color:var(--om-muted); font-size:.65rem; }
-.om-history-summary strong { color:var(--om-dark); font-size:1.5rem; font-family:var(--font-head,"Bricolage Grotesque",sans-serif); }
-.om-history-summary .om-amber-text { color:#b96b00; }
-.om-history-summary i { width:1px; height:37px; background:var(--om-line); }
-.om-search { display:flex; align-items:center; gap:8px; height:45px; padding:0 12px; background:#fff; border:1px solid var(--om-line); border-radius:13px; margin-bottom:12px; color:#84948a; }
-.om-search:focus-within { border-color:#7bb894; box-shadow:0 0 0 3px #e5f5ec; }
-.om-search>span { font-size:1.35rem; line-height:1; }
-.om-search input { width:100%; min-width:0; border:0; outline:0; background:transparent; color:var(--om-ink); font-size:.73rem; }
-.om-search button { border:0; background:#edf4ef; border-radius:50%; width:24px; height:24px; font-size:1rem; color:var(--om-muted); }
-.om-filter-row { display:flex; gap:7px; overflow-x:auto; padding:1px 0 5px; margin-bottom:10px; scrollbar-width:none; }
-.om-filter-row::-webkit-scrollbar { display:none; }
-.om-filter-row button { flex:0 0 auto; padding:8px 11px; border:1px solid var(--om-line); border-radius:99px; background:#fff; color:var(--om-muted); font-size:.65rem; font-weight:700; }
-.om-filter-row button.selected { background:var(--om-dark); color:#fff; border-color:var(--om-dark); }
-.om-history-list { display:flex; flex-direction:column; gap:10px; }
-.om-history-card { background:#fff; border:1px solid #e3ece6; border-radius:16px; padding:12px; box-shadow:0 5px 16px rgba(10,79,43,.035); }
-.om-history-top { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; margin-bottom:11px; }
-.om-history-date { display:flex; align-items:center; gap:9px; min-width:0; }
-.om-xray-thumb { width:48px; height:48px; flex:0 0 48px; border-radius:10px; display:grid; place-items:center; color:#e0e7e2; background:linear-gradient(140deg,#101a14,#58655d); font-size:1.5rem; }
-.om-history-date strong { display:block; font-size:.73rem; margin-bottom:3px; }
-.om-history-date small { display:block; font-size:.61rem; color:var(--om-muted); }
-.om-history-metrics { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px; }
-.om-history-metrics>div { padding:9px; border:1px solid #e4eee7; border-radius:10px; background:#f5f9f6; min-width:0; }
-.om-history-metrics span { display:block; color:var(--om-muted); font-size:.59rem; margin-bottom:3px; }
-.om-history-metrics strong { font-family:var(--font-head,"Bricolage Grotesque",sans-serif); font-size:.9rem; color:var(--om-dark); }
-.om-history-metrics strong.bone { color:#873b3b; }
-.om-history-bottom { display:flex; justify-content:space-between; align-items:center; gap:8px; border-top:1px solid #edf2ee; padding-top:10px; }
-.om-history-bottom p { margin:0; color:var(--om-muted); font-size:.65rem; }
-.om-history-bottom p strong { color:var(--om-ink); }
-.om-detail-button { border:1px solid #b8ddc7; border-radius:10px; padding:8px 10px; background:#f1faf4; color:var(--om-dark); font-size:.65rem; font-weight:800; white-space:nowrap; }
-.om-empty-state { text-align:center; padding:28px 16px; border:1px dashed var(--om-line); border-radius:15px; background:#fff; color:var(--om-muted); font-size:.75rem; }
-.om-empty-state strong { display:block; color:var(--om-ink); margin-bottom:5px; }
-.om-detail-dialog { width:calc(100% - 28px); max-width:460px; max-height:85dvh; overflow:auto; padding:21px; border:0; border-radius:20px; color:var(--om-ink); box-shadow:0 25px 80px rgba(0,0,0,.25); }
-.om-detail-dialog::backdrop { background:rgba(5,31,17,.55); backdrop-filter:blur(3px); }
-.om-dialog-close { float:right; width:30px; height:30px; border:0; border-radius:50%; background:#edf4ef; color:var(--om-dark); font-size:1.25rem; }
-.om-detail-dialog h2 { margin:7px 0 5px; font-size:1.2rem; }
-.om-detail-dialog p { color:var(--om-muted); font-size:.75rem; line-height:1.6; }
-.om-detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0; }
-.om-detail-grid>div { background:#f3f8f5; border:1px solid #e1ece5; border-radius:11px; padding:11px; }
-.om-detail-grid span { display:block; color:var(--om-muted); font-size:.63rem; margin-bottom:3px; }
-.om-detail-grid strong { color:var(--om-dark); font-size:.9rem; }
-.om-detail-explanation { background:#fff8ec; border:1px solid #f1d29b; padding:12px; border-radius:12px; margin:12px 0; }
-.om-detail-explanation strong { color:#995b00; font-size:.76rem; }
-.om-detail-explanation p { margin:5px 0 0; color:#6c5a40; }
-@media(min-width:700px) { .history-page .om-content { max-width:1000px; } .om-history-card { padding:16px; } }
-@media(max-width:360px) { .om-history-top { flex-wrap:wrap; } .om-history-top .om-status { margin-left:57px; } .om-history-bottom { align-items:flex-start; flex-direction:column; } }
+/* ==========================================
+   JUDUL HALAMAN RIWAYAT
+   ========================================== */
 
-/* Keep this page in the centered phone frame on laptop too. */
-body > .ossia-mobile-page { width: min(390px, 100vw) !important; max-width: none !important; }
+.history-page .om-page-intro {
+  margin: 3px 1px 19px;
+}
+
+.history-page .om-page-intro h1 {
+  font-family: var(--font-head, "Bricolage Grotesque", sans-serif);
+  font-size: 1.5rem;
+  margin: 0 0 6px;
+}
+
+/* ==========================================
+   RINGKASAN PEMERIKSAAN
+   ========================================== */
+
+.history-page .om-history-summary {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  align-items: center;
+  gap: 14px;
+
+  background: #fff;
+  border: 1px solid #e4eee7;
+  border-radius: 16px;
+  padding: 15px;
+
+  box-shadow: 0 7px 22px rgba(10, 79, 43, .045);
+  margin-bottom: 15px;
+}
+
+.om-history-summary > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.om-history-summary span {
+  color: var(--om-muted);
+  font-size: .65rem;
+}
+
+.om-history-summary strong {
+  color: var(--om-dark);
+  font-size: 1.5rem;
+  font-family: var(--font-head, "Bricolage Grotesque", sans-serif);
+}
+
+.om-history-summary .om-amber-text {
+  color: #b96b00;
+}
+
+.om-history-summary i {
+  width: 1px;
+  height: 37px;
+  background: var(--om-line);
+}
+
+/* ==========================================
+   KOLOM PENCARIAN
+   ========================================== */
+
+.om-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  height: 45px;
+  padding: 0 12px;
+
+  background: #fff;
+  border: 1px solid var(--om-line);
+  border-radius: 13px;
+
+  margin-bottom: 12px;
+  color: #84948a;
+}
+
+.om-search:focus-within {
+  border-color: #7bb894;
+  box-shadow: 0 0 0 3px #e5f5ec;
+}
+
+.om-search > span {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.om-search input {
+  width: 100%;
+  min-width: 0;
+
+  border: 0;
+  outline: 0;
+  background: transparent;
+
+  color: var(--om-ink);
+  font-size: .73rem;
+}
+
+.om-search button {
+  border: 0;
+  background: #edf4ef;
+  border-radius: 50%;
+
+  width: 24px;
+  height: 24px;
+
+  font-size: 1rem;
+  color: var(--om-muted);
+}
+
+/* ==========================================
+   FILTER PEMERIKSAAN
+   ========================================== */
+
+.om-filter-row {
+  display: flex;
+  gap: 7px;
+
+  overflow-x: auto;
+  padding: 1px 0 5px;
+  margin-bottom: 10px;
+
+  scrollbar-width: none;
+}
+
+.om-filter-row::-webkit-scrollbar {
+  display: none;
+}
+
+.om-filter-row button {
+  flex: 0 0 auto;
+  padding: 8px 11px;
+
+  border: 1px solid var(--om-line);
+  border-radius: 99px;
+
+  background: #fff;
+  color: var(--om-muted);
+
+  font-size: .65rem;
+  font-weight: 700;
+}
+
+.om-filter-row button.selected {
+  background: var(--om-dark);
+  color: #fff;
+  border-color: var(--om-dark);
+}
+
+/* ==========================================
+   DAFTAR RIWAYAT
+   ========================================== */
+
+.om-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.om-history-card {
+  background: #fff;
+  border: 1px solid #e3ece6;
+  border-radius: 16px;
+
+  padding: 12px;
+
+  box-shadow: 0 5px 16px rgba(10, 79, 43, .035);
+}
+
+.om-history-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 8px;
+  margin-bottom: 11px;
+}
+
+.om-history-date {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.om-xray-thumb {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+
+  border-radius: 10px;
+
+  display: grid;
+  place-items: center;
+
+  color: #e0e7e2;
+  background: linear-gradient(140deg, #101a14, #58655d);
+  font-size: 1.5rem;
+}
+
+.om-history-date strong {
+  display: block;
+  font-size: .73rem;
+  margin-bottom: 3px;
+}
+
+.om-history-date small {
+  display: block;
+  font-size: .61rem;
+  color: var(--om-muted);
+}
+
+/* ==========================================
+   METRIK PEMERIKSAAN
+   ========================================== */
+
+.om-history-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.om-history-metrics > div {
+  padding: 9px;
+  border: 1px solid #e4eee7;
+  border-radius: 10px;
+  background: #f5f9f6;
+  min-width: 0;
+}
+
+.om-history-metrics span {
+  display: block;
+  color: var(--om-muted);
+  font-size: .59rem;
+  margin-bottom: 3px;
+}
+
+.om-history-metrics strong {
+  font-family: var(--font-head, "Bricolage Grotesque", sans-serif);
+  font-size: .9rem;
+  color: var(--om-dark);
+}
+
+.om-history-metrics strong.bone {
+  color: #873b3b;
+}
+
+/* ==========================================
+   BAGIAN BAWAH KARTU
+   ========================================== */
+
+.om-history-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+
+  border-top: 1px solid #edf2ee;
+  padding-top: 10px;
+}
+
+.om-history-bottom p {
+  margin: 0;
+  color: var(--om-muted);
+  font-size: .65rem;
+}
+
+.om-history-bottom p strong {
+  color: var(--om-ink);
+}
+
+.om-detail-button {
+  border: 1px solid #b8ddc7;
+  border-radius: 10px;
+
+  padding: 8px 10px;
+
+  background: #f1faf4;
+  color: var(--om-dark);
+
+  font-size: .65rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* ==========================================
+   BELUM ADA RIWAYAT PEMERIKSAAN
+   ========================================== */
+
+.om-empty-state {
+  text-align: center;
+  padding: 28px 16px;
+
+  border: 1px dashed var(--om-line);
+  border-radius: 15px;
+
+  background: #fff;
+  color: var(--om-muted);
+
+  font-size: .75rem;
+}
+
+.om-empty-state strong {
+  display: block;
+  color: var(--om-ink);
+  margin-bottom: 5px;
+}
+
+/* ==========================================
+   DIALOG DETAIL PEMERIKSAAN
+   ========================================== */
+
+.om-detail-dialog {
+  width: calc(100% - 28px);
+  max-width: 460px;
+  max-height: 85dvh;
+
+  overflow: auto;
+  padding: 21px;
+
+  border: 0;
+  border-radius: 20px;
+
+  color: var(--om-ink);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, .25);
+}
+
+.om-detail-dialog::backdrop {
+  background: rgba(5, 31, 17, .55);
+  backdrop-filter: blur(3px);
+}
+
+.om-dialog-close {
+  float: right;
+
+  width: 30px;
+  height: 30px;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: #edf4ef;
+  color: var(--om-dark);
+
+  font-size: 1.25rem;
+}
+
+.om-detail-dialog h2 {
+  margin: 7px 0 5px;
+  font-size: 1.2rem;
+}
+
+.om-detail-dialog p {
+  color: var(--om-muted);
+  font-size: .75rem;
+  line-height: 1.6;
+}
+
+.om-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.om-detail-grid > div {
+  background: #f3f8f5;
+  border: 1px solid #e1ece5;
+  border-radius: 11px;
+  padding: 11px;
+}
+
+.om-detail-grid span {
+  display: block;
+  color: var(--om-muted);
+  font-size: .63rem;
+  margin-bottom: 3px;
+}
+
+.om-detail-grid strong {
+  color: var(--om-dark);
+  font-size: .9rem;
+}
+
+.om-detail-explanation {
+  background: #fff8ec;
+  border: 1px solid #f1d29b;
+
+  padding: 12px;
+  border-radius: 12px;
+  margin: 12px 0;
+}
+
+.om-detail-explanation strong {
+  color: #995b00;
+  font-size: .76rem;
+}
+
+.om-detail-explanation p {
+  margin: 5px 0 0;
+  color: #6c5a40;
+}
+
+/* ==========================================
+   RESPONSIVE DASAR
+   ========================================== */
+
 @media (min-width: 700px) {
-  body > .history-page .om-content { max-width: none !important; }
+  .history-page .om-content {
+    max-width: 1000px;
+  }
+
+  .om-history-card {
+    padding: 16px;
+  }
 }
 
-/* Match Home header and content frame */
-.history-page { position:relative; }
-.history-page .om-topbar { min-height:68px; height:68px; padding:0 18px; display:flex; align-items:center; }
-.history-page .om-brand { gap:10px; line-height:1.05; }
-.history-page .om-logo { flex:0 0 38px; width:38px; height:38px; }
-.history-page .om-icon-btn { width:46px; height:46px; border-radius:15px; }
-.history-page .om-content { padding-top:19px !important; }
-@media (min-width:431px) {
- body > .history-page { height:min(844px,100dvh) !important; min-height:0 !important; overflow-y:auto !important; overflow-x:hidden !important; padding-bottom:78px !important; }
- body > .history-page .om-topbar { position:sticky; top:0; z-index:5; }
+@media (max-width: 360px) {
+  .om-history-top {
+    flex-wrap: wrap;
+  }
+
+  .om-history-top .om-status {
+    margin-left: 57px;
+  }
+
+  .om-history-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }
-@media (max-width:430px) {
- body > .history-page { height:100dvh !important; min-height:0 !important; overflow-y:auto !important; padding-bottom:78px !important; border-radius:0 !important; }
- .history-page .om-topbar { position:sticky; top:0; z-index:5; }
+
+/* ==========================================
+   OSSIA - LEBAR HALAMAN RIWAYAT
+   ========================================== */
+
+/*
+   Saat dibuka langsung di laptop,
+   halaman tetap menggunakan bingkai HP.
+*/
+
+body > .history-page.ossia-mobile-page {
+  width: min(390px, 100vw) !important;
+  max-width: none !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/*
+   Saat berada di iframe OSSIA yang
+   lebarnya maksimal 430px, halaman
+   mengikuti lebar ruang yang tersedia.
+*/
+
+@media (max-width: 460px) {
+  html,
+  body {
+    width: 100%;
+    margin: 0;
+    overflow-x: hidden;
+  }
+
+  body > .history-page.ossia-mobile-page {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+/* ==========================================
+   HEADER RIWAYAT - SAMA SEPERTI HOME
+   ========================================== */
+
+.history-page {
+  position: relative;
+}
+
+.history-page .om-topbar {
+  min-height: 68px;
+  height: 68px;
+
+  padding: 0 18px;
+
+  display: flex;
+  align-items: center;
+}
+
+.history-page .om-brand {
+  gap: 10px;
+  line-height: 1.05;
+}
+
+.history-page .om-logo {
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+}
+
+.history-page .om-icon-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 15px;
+}
+
+.history-page .om-content {
+  padding-top: 19px !important;
+}
+
+/* ==========================================
+   LAYOUT LAPTOP / TABLET
+   ========================================== */
+
+@media (min-width: 431px) {
+  body > .history-page {
+    height: min(844px, 100dvh) !important;
+    min-height: 0 !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    padding-bottom: 78px !important;
+  }
+
+  body > .history-page .om-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+}
+
+/* ==========================================
+   LAYOUT LAYAR HP
+   ========================================== */
+
+@media (max-width: 430px) {
+  body > .history-page {
+    height: 100dvh !important;
+    min-height: 0 !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    padding-bottom: 78px !important;
+    border-radius: 0 !important;
+  }
+
+  .history-page .om-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
 }
