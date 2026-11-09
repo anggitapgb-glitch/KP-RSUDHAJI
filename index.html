@@ -236,11 +236,17 @@
        * yang berjalan di dalam iframe landing.html.
        */
       window.openOssiaPage = function (page) {
-        if (!page) return;
+  if (!page) return;
 
-        nav.style.display = "none";
-        frame.src = page;
-      };
+  const targetPage = new URL(page, window.location.href)
+    .pathname.split("/").pop().toLowerCase();
+
+  nav.style.display = appPages.includes(targetPage)
+    ? "grid"
+    : "none";
+
+  frame.src = page;
+};
 
       function getCurrentFile() {
         try {
