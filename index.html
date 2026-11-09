@@ -249,6 +249,27 @@
 };
 
       function getCurrentFile() {
+  let filename;
+
+  try {
+    filename = new URL(
+      frame.contentWindow.location.href
+    ).pathname.split("/").pop().toLowerCase();
+  } catch (error) {
+    filename = new URL(
+      frame.src,
+      window.location.href
+    ).pathname.split("/").pop().toLowerCase();
+  }
+
+  // Cloudflare Pages menghilangkan ekstensi .html.
+  // Samakan kembali agar dikenali oleh navigasi OSSIA.
+  if (filename && !filename.endsWith(".html")) {
+    filename += ".html";
+  }
+
+  return filename;
+}
         try {
           return new URL(
             frame.contentWindow.location.href
