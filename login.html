@@ -1,128 +1,309 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0a4f2b">
-<title>OSSIA | Masuk</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+  <meta name="theme-color" content="#0a4f2b">
 
-<style>
-  /* Halaman login OSSIA */
-  .auth-page {
-    position: relative;
-  }
+  <title>OSSIA | Masuk</title>
 
-  /* Tombol Kembali */
-  .auth-page .back-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin: 16px 0 12px 20px;
-    padding: 9px 14px;
-    background: #e5f5ec;
-    color: #0a4f2b;
-    border: 1px solid #cce5d5;
-    border-radius: 12px;
-    font-family: "Public Sans", sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-  }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  /* Logo OSSIA: sejajar dengan form */
-  .auth-page .auth-brand {
-    position: static;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: calc(100% - 80px);
-    max-width: 456px;
-    margin: 16px auto 24px;
-    padding: 0;
-    transform: none;
-  }
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
 
-  /* Ikon O */
-  .auth-page .auth-brand .brand-symbol {
-    display: grid;
-    place-items: center;
-    width: 38px;
-    height: 38px;
-    flex: 0 0 38px;
-    background: #0a4f2b;
-    color: white;
-    border-radius: 11px;
-    font-family: "Bricolage Grotesque", sans-serif;
-    font-size: 23px;
-    font-weight: 700;
-    line-height: 1;
-  }
+  <link rel="stylesheet" href="style.css">
 
-  /* Tulisan OSSIA */
-  .auth-page .auth-brand strong {
-    display: block;
-    color: #0a4f2b;
-    font-family: "Bricolage Grotesque", sans-serif;
-    font-size: 21px;
-    font-weight: 700;
-    letter-spacing: 0.3px;
-    line-height: 1.2;
-  }
+  <style>
+    /* ==========================================
+       OSSIA - HALAMAN LOGIN
+       ========================================== */
 
-  /* Form login tetap seperti semula */
-  .login-submit {
-    cursor: pointer;
-  }
+    .auth-page {
+      position: relative;
+    }
 
-  .login-message {
-    display: none;
-    color: #b42318;
-    font-size: .82rem;
-    margin: .5rem 0 0;
-  }
+    /* ==========================================
+       TOMBOL KEMBALI
+       ========================================== */
 
-  .login-message.show {
-    display: block;
-  }
-</style>
+    .auth-page .back-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      margin: 16px 0 12px 20px;
+      padding: 9px 14px;
+
+      background: #e5f5ec;
+      color: #0a4f2b;
+
+      border: 1px solid #cce5d5;
+      border-radius: 12px;
+
+      font-family: "Public Sans", sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+
+      cursor: pointer;
+    }
+
+    /* ==========================================
+       BRAND OSSIA
+       ========================================== */
+
+    .auth-page .auth-brand {
+      position: static;
+
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      width: calc(100% - 80px);
+      max-width: 456px;
+
+      margin: 16px auto 24px;
+      padding: 0;
+
+      transform: none;
+    }
+
+    /* Ikon O */
+    .auth-page .auth-brand .brand-symbol {
+      display: grid;
+      place-items: center;
+
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
+
+      background: #0a4f2b;
+      color: #ffffff;
+
+      border-radius: 11px;
+
+      font-family: "Bricolage Grotesque", sans-serif;
+      font-size: 23px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    /* Tulisan OSSIA */
+    .auth-page .auth-brand strong {
+      display: block;
+
+      color: #0a4f2b;
+
+      font-family: "Bricolage Grotesque", sans-serif;
+      font-size: 21px;
+      font-weight: 700;
+
+      letter-spacing: 0.3px;
+      line-height: 1.2;
+    }
+
+    /* ==========================================
+       FORM LOGIN
+       ========================================== */
+
+    .login-submit {
+      cursor: pointer;
+    }
+
+    .login-message {
+      display: none;
+
+      color: #b42318;
+      font-size: 0.82rem;
+
+      margin: 0.5rem 0 0;
+    }
+
+    .login-message.show {
+      display: block;
+    }
+  </style>
 </head>
+
 <body>
-<section class="auth-page">
-  <button class="back-link" type="button" onclick="window.location.href='landing.html'">← Kembali</button>
-  <div class="auth-brand"><span class="brand-symbol">O</span><strong>OSSIA</strong></div>
-  <div class="login-form-wrap">
-    <form class="login-card" id="loginForm">
-      <h2>Masuk ke OSSIA</h2>
-      <p class="sub">Silakan masuk menggunakan No. Rekam Medis Anda.</p>
-      <div class="field" style="margin-top:1.5rem;">
-        <label for="rm">No. Rekam Medis</label>
-        <input id="rm" name="rm" placeholder="Masukkan No. RM Anda" type="text" autocomplete="username" required>
-      </div>
-      <div class="field">
-        <label for="password">Kata Sandi / Tanggal Lahir</label>
-        <input id="password" name="password" placeholder="Masukkan kata sandi atau tanggal lahir" type="password" autocomplete="current-password" required>
-      </div>
-      <p class="login-message" id="loginMessage">Isi No. Rekam Medis dan kata sandi terlebih dahulu.</p>
-      <button class="btn block login-submit" type="submit" style="margin-top:1rem;">Masuk</button>
-    </form>
-  </div>
-</section>
-<script>
-document.getElementById('loginForm').addEventListener('submit', function (event) {
-  event.preventDefault();
-  const rm = document.getElementById('rm').value.trim();
-  const password = document.getElementById('password').value.trim();
-  if (!rm || !password) {
-    document.getElementById('loginMessage').classList.add('show');
-    return;
-  }
-  // Login ini masih mode demo: input tidak diverifikasi ke server.
-  window.location.href = 'home.html';
-});
-</script>
+
+  <section class="auth-page">
+
+    <!-- Tombol kembali ke Landing -->
+    <button
+      class="back-link"
+      type="button"
+      onclick="window.location.href='landing.html'"
+    >
+      ← Kembali
+    </button>
+
+    <!-- Logo OSSIA -->
+    <div class="auth-brand">
+      <span class="brand-symbol">O</span>
+      <strong>OSSIA</strong>
+    </div>
+
+    <!-- Form Login -->
+    <div class="login-form-wrap">
+
+      <form class="login-card" id="loginForm">
+
+        <h2>Masuk ke OSSIA</h2>
+
+        <p class="sub">
+          Silakan masuk menggunakan No. Rekam Medis Anda.
+        </p>
+
+        <!-- Nomor Rekam Medis -->
+        <div class="field" style="margin-top: 1.5rem;">
+
+          <label for="rm">
+            No. Rekam Medis
+          </label>
+
+          <input
+            id="rm"
+            name="rm"
+            placeholder="Masukkan No. RM Anda"
+            type="text"
+            autocomplete="username"
+            required
+          >
+
+        </div>
+
+        <!-- Kata Sandi -->
+        <div class="field">
+
+          <label for="password">
+            Kata Sandi / Tanggal Lahir
+          </label>
+
+          <input
+            id="password"
+            name="password"
+            placeholder="Masukkan kata sandi atau tanggal lahir"
+            type="password"
+            autocomplete="current-password"
+            required
+          >
+
+        </div>
+
+        <!-- Pesan kesalahan -->
+        <p class="login-message" id="loginMessage">
+          Isi No. Rekam Medis dan kata sandi terlebih dahulu.
+        </p>
+
+        <!-- Tombol masuk -->
+        <button
+          class="btn block login-submit"
+          type="submit"
+          style="margin-top: 1rem;"
+        >
+          Masuk
+        </button>
+
+      </form>
+
+    </div>
+
+  </section>
+
+  <script>
+    "use strict";
+
+    /* ==========================================
+       OSSIA - NAVIGASI LOGIN
+       ========================================== */
+
+    function openHome() {
+
+      /*
+       * Jika Login dibuka di dalam iframe index.html,
+       * gunakan fungsi navigasi milik index.html.
+       */
+
+      try {
+
+        if (
+          window.parent !== window &&
+          typeof window.parent.openOssiaPage === "function"
+        ) {
+
+          window.parent.openOssiaPage("home.html");
+          return;
+
+        }
+
+      } catch (error) {
+
+        console.warn(
+          "Navigasi bingkai utama tidak tersedia.",
+          error
+        );
+
+      }
+
+      /*
+       * Jika login.html dibuka secara langsung,
+       * arahkan ke home.html seperti biasanya.
+       */
+
+      window.location.href = "home.html";
+    }
+
+    /* ==========================================
+       PROSES LOGIN DEMO
+       ========================================== */
+
+    document
+      .getElementById("loginForm")
+      .addEventListener("submit", function (event) {
+
+        event.preventDefault();
+
+        const rm = document
+          .getElementById("rm")
+          .value
+          .trim();
+
+        const password = document
+          .getElementById("password")
+          .value
+          .trim();
+
+        const message = document.getElementById(
+          "loginMessage"
+        );
+
+        /* Validasi input kosong */
+        if (!rm || !password) {
+
+          message.classList.add("show");
+          return;
+
+        }
+
+        message.classList.remove("show");
+
+        /*
+         * Login masih mode demo.
+         * Belum memverifikasi data ke server.
+         */
+
+        openHome();
+
+      });
+  </script>
+
 </body>
 </html>
